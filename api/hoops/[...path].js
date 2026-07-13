@@ -31,8 +31,12 @@ export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
   if (!process.env.APISPORTS_KEY) return res.status(500).json({ error: 'Proxy mal configurado: falta APISPORTS_KEY' });
 
-  // req.query.path = segmentos tras /api/hoops (catch-all). "" → healthcheck.
-  const segs = [].concat(req.query.path || []).filter(Boolean);
+  // Extraemos la ruta DIRECTAMENTE de la URL, sin depender del parámetro
+  // catch-all de Vercel (que en algunos setups llega vacío). Todo lo que
+  // haya tras "/api/hoops" son los segmentos del endpoint. "" → healthcheck.
+  const url = new URL(req.url, 'http://x');
+  const after = url.pathname.replace(/^.*\/api\/hoops/, '');   // "/leagues", "" ...
+  const segs = after.split('/').filter(Boolean);
   if (segs.length === 0) return res.status(200).json({ ok: true, service: 'basket-atlas-hoops-proxy', upstream: UPSTREAM });
 
   const path = '/' + segs.join('/');
@@ -40,7 +44,6 @@ export default async function handler(req, res) {
   if (!ALLOW.includes(path) && !ALLOW.includes(base)) return res.status(403).json({ error: 'Endpoint no permitido por el proxy', path });
 
   // Reconstruye el querystring original (sin el parámetro "path" que añade Vercel).
-  const url = new URL(req.url, 'http://x');
   url.searchParams.delete('path');
   const target = UPSTREAM + path + (url.search || '');
 
