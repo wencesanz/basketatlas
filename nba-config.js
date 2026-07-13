@@ -23,7 +23,7 @@ window.NBA_PROXY_BASE = "";
  *
  *   window.HOOPS_PROXY_BASE = "https://basket-atlas-proxy.<you>.workers.dev/hoops";
  */
-window.HOOPS_PROXY_BASE = "";
+window.HOOPS_PROXY_BASE = "https://basketatlas.vercel.app/api/hoops";
 
 /*
  * NBA_NEWS_RSS — RSS feed for the live News headlines (News page).
