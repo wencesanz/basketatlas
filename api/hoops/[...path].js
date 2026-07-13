@@ -15,6 +15,7 @@
  */
 
 const UPSTREAM = 'https://v1.basketball.api-sports.io';
+const VERSION = 'v3';
 const ALLOW = ['/leagues', '/teams', '/players', '/players/statistics', '/standings', '/games', '/statistics', '/seasons', '/countries'];
 const TTL = { '/leagues': 86400, '/countries': 86400, '/seasons': 86400, '/teams': 3600, '/standings': 300, '/players': 600, '/players/statistics': 600, '/games': 60, '/statistics': 300 };
 
@@ -37,17 +38,23 @@ export default async function handler(req, res) {
   const url = new URL(req.url, 'http://x');
   const after = url.pathname.replace(/^.*\/api\/hoops/, '');   // "/leagues", "" ...
   const segs = after.split('/').filter(Boolean);
-  if (segs.length === 0) return res.status(200).json({ ok: true, service: 'basket-atlas-hoops-proxy', upstream: UPSTREAM });
+  if (segs.length === 0) return res.status(200).json({ ok: true, service: 'basket-atlas-hoops-proxy', version: VERSION, upstream: UPSTREAM });
 
   const path = '/' + segs.join('/');
   const base = '/' + segs.slice(0, 2).join('/');
   if (!ALLOW.includes(path) && !ALLOW.includes(base)) return res.status(403).json({ error: 'Endpoint no permitido por el proxy', path });
 
-  // Reconstruye el querystring original quitando los parámetros internos que
-  // Vercel inyecta para la ruta catch-all (según versión: "path" o "___path").
-  url.searchParams.delete('path');
-  url.searchParams.delete('___path');
-  const target = UPSTREAM + path + (url.search || '');
+  // Reconstruye el querystring desde cero: solo conservamos parámetros reales
+  // de la API (id, season, league, search, team...) y descartamos CUALQUIER
+  // parámetro de ruta que inyecte Vercel (path, ___path, nxtP..., etc.).
+  const clean = new URLSearchParams();
+  for (const [k, v] of url.searchParams) {
+    if (/path/i.test(k)) continue;                 // ignora path, ___path, ...
+    if (k.startsWith('nxtP') || k.startsWith('__')) continue;
+    clean.append(k, v);
+  }
+  const qs = clean.toString();
+  const target = UPSTREAM + path + (qs ? '?' + qs : '');
 
   let upstream;
   try {
