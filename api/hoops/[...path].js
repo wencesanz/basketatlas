@@ -43,8 +43,10 @@ export default async function handler(req, res) {
   const base = '/' + segs.slice(0, 2).join('/');
   if (!ALLOW.includes(path) && !ALLOW.includes(base)) return res.status(403).json({ error: 'Endpoint no permitido por el proxy', path });
 
-  // Reconstruye el querystring original (sin el parámetro "path" que añade Vercel).
+  // Reconstruye el querystring original quitando los parámetros internos que
+  // Vercel inyecta para la ruta catch-all (según versión: "path" o "___path").
   url.searchParams.delete('path');
+  url.searchParams.delete('___path');
   const target = UPSTREAM + path + (url.search || '');
 
   let upstream;
