@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;background:#181818;font-family:'Inter',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;}
+  .pageroot{
+    --bg:#181818;--fg:#EFEFE4;--muted:#8A8A85;--accent:#81ADEC;--on-accent:#101010;
+    --surface:#1c1c1c;--surface2:#242424;--border:#333;--border2:#262626;--hairline:#222;
+    --card-border:rgba(255,255,255,.08);--dropdown-foot:#191919;
+    transition:background .25s ease,color .25s ease;
+  }
+  .pageroot[data-theme="light"]{
+    --bg:#F6F5F0;--fg:#1B1B1A;--muted:#6C6C66;--accent:#2E63C4;--on-accent:#FFFFFF;
+    --surface:#FFFFFF;--surface2:#EFEEE8;--border:#DAD9D1;--border2:#E6E5DE;--hairline:#E4E3DC;
+    --card-border:rgba(0,0,0,.10);--dropdown-foot:#EFEEE8;
+  }
+  a{color:var(--fg);text-decoration:none;}
+</style>
+<script src="./image-slot.js"></script>
+<script src="./nba-config.js"></script>
+<script src="./nba-api.js"></script>
+</helmet>
+
+<div class="pageroot" data-theme="{{ theme }}" style="min-height:100vh;background:var(--bg);color:var(--fg);">
+<div style="max-width:1160px;margin:0 auto;padding:0 clamp(16px,4vw,28px) 40px;">
+
+  <header style="display:flex;justify-content:space-between;align-items:center;padding:22px 0;flex-wrap:wrap;gap:16px;">
+    <a href="Home.dc.html" style="display:flex;align-items:center;color:var(--fg);"><svg viewBox="0 0 660 200" style="height: 57px; width: 202px; display: block" role="img" aria-label="Basket Atlas"><g fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round"><circle cx="70" cy="100" r="52"></circle><path d="M18,100 H122"></path><path d="M70,48 A26,52 0 0 1 70,152"></path><path d="M70,48 A26,52 0 0 0 70,152"></path></g><text x="158" y="126" font-family="Inter, Helvetica, Arial, sans-serif" font-weight="700" font-size="72" letter-spacing="-1" fill="currentColor">Basket Atlas</text></svg></a>
+    <nav style="display:flex;gap:14px 20px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
+      <a href="Players.dc.html" style="font-size:14px;font-weight:500;color:var(--muted);">Players</a>
+      <a href="League.dc.html" style="font-size:14px;font-weight:500;color:var(--muted);">Leagues</a>
+      <a href="Transfers.dc.html" style="font-size:14px;font-weight:500;color:var(--muted);">Transfers</a>
+      <a href="News.dc.html" style="font-size:14px;font-weight:500;color:var(--muted);">News</a>
+      <a href="Players.dc.html" style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:7px 12px;" style-hover="border-color:var(--accent);color:var(--fg);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>Search</a>
+      <button onClick="{{ toggleTheme }}" aria-label="Toggle background" style="display:flex;align-items:center;justify-content:center;width:34px;height:32px;background:transparent;border:1px solid var(--border);border-radius:7px;color:var(--muted);cursor:pointer;font-family:inherit;padding:0;" style-hover="border-color:var(--accent);color:var(--fg);">
+        <sc-if value="{{ isLight }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></sc-if>
+        <sc-if value="{{ isDark }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+      </button>
+      <span style="font-size:12px;font-weight:600;color:var(--muted);border:1px solid var(--border);border-radius:7px;padding:6px 10px;">EN</span>
+    </nav>
+  </header>
+
+  <!-- hero -->
+  <section style="padding:56px 0 60px;">
+    <div style="display:flex;justify-content:space-between;gap:56px;align-items:flex-start;flex-wrap:wrap;">
+      <div style="flex-shrink:0;max-width:520px;width:100%;">
+        <div style="font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);font-weight:600;">Search across 17 leagues</div>
+        <div style="font-size:clamp(30px,6vw,44px);line-height:1.08;font-weight:700;letter-spacing:-.02em;color:var(--fg);margin-top:10px;">Find any player.</div>
+        <p style="font-size:16px;line-height:1.6;color:var(--muted);margin:16px 0 0;max-width:440px;">Type a name, team or country — and see stats, career and transfers across the NBA, EuroLeague, ACB and more.</p>
+
+        <div style="position:relative;margin-top:22px;">
+          <div style="position:absolute;left:16px;top:26px;transform:translateY(-50%);color:var(--muted);display:flex;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg></div>
+          <input value="{{ q }}" onInput="{{ onSearch }}" placeholder="Search players — try “Dončić” or “Serbia”" style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:15px 16px 15px 46px;font-family:inherit;font-size:15px;color:var(--fg);outline:none;" style-focus="border-color:var(--accent);">
+          <sc-if value="{{ hasQuery }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:calc(100% + 8px);left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;z-index:30;box-shadow:0 24px 60px -20px rgba(0,0,0,.85);">
+              <sc-for list="{{ searchResults }}" as="p" hint-placeholder-count="4">
+                <a href="Player.dc.html" style="display:flex;align-items:center;gap:12px;padding:12px 14px;color:var(--fg);border-bottom:1px solid var(--border2);" style-hover="background:var(--surface2);">
+                  <span style="width:34px;height:34px;border-radius:7px;background:var(--surface2);color:var(--fg);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">{{ p.num }}</span>
+                  <span style="flex:1;min-width:0;"><span style="font-size:14px;font-weight:600;">{{ p.name }}</span><br><span style="font-size:12px;color:var(--muted);">{{ p.team }} · {{ p.league }} · {{ p.pos }}</span></span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);font-weight:700;">{{ p.val }}</span>
+                </a>
+              </sc-for>
+              <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:14px;font-size:13px;color:var(--muted);">No players found — <a href="Players.dc.html" style="color:var(--accent);">browse all</a></div>
+              </sc-if>
+              <a href="Players.dc.html" style="display:block;padding:12px 14px;text-align:center;color:var(--accent);font-size:13px;font-weight:600;background:var(--dropdown-foot);">See all results →</a>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;align-items:center;">
+          <span style="font-size:12px;color:var(--muted);">Browse:</span>
+          <a href="Players.dc.html" style="font-size:13px;font-weight:500;color:var(--muted);border:1px solid var(--border);border-radius:18px;padding:6px 13px;" style-hover="border-color:var(--accent);color:var(--fg);">All players</a>
+          <a href="Players.dc.html" style="font-size:13px;font-weight:500;color:var(--muted);border:1px solid var(--border);border-radius:18px;padding:6px 13px;" style-hover="border-color:var(--accent);color:var(--fg);">Guards</a>
+          <a href="Players.dc.html" style="font-size:13px;font-weight:500;color:var(--muted);border:1px solid var(--border);border-radius:18px;padding:6px 13px;" style-hover="border-color:var(--accent);color:var(--fg);">Forwards</a>
+          <a href="Players.dc.html" style="font-size:13px;font-weight:500;color:var(--muted);border:1px solid var(--border);border-radius:18px;padding:6px 13px;" style-hover="border-color:var(--accent);color:var(--fg);">Centers</a>
+        </div>
+      </div>
+
+      <!-- live leaders demo -->
+      <div style="flex:1;min-width:300px;background:var(--surface);border:1px solid var(--card-border);border-radius:12px;padding:20px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <div style="display:flex;gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--border);"></span><span style="width:8px;height:8px;border-radius:50%;background:var(--border);"></span><span style="width:8px;height:8px;border-radius:50%;background:var(--border);"></span></div>
+          <div style="font-size:11px;color:var(--muted);">{{ leadersCaption }}</div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;">
+          <sc-for list="{{ leagueTabs }}" as="t" hint-placeholder-count="8">
+            <button data-league="{{ t.key }}" onClick="{{ selectLeague }}" style="font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;padding:6px 12px;border-radius:16px;background:{{ t.bg }};color:{{ t.color }};border:1px solid {{ t.bd }};">{{ t.label }}</button>
+          </sc-for>
+        </div>
+        <sc-if value="{{ hasData }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:28px 1fr 62px 62px 56px;gap:10px;padding:0 6px 8px;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border2);margin-bottom:4px;">
+          <span>#</span><span>Player</span><span style="text-align:right;">PTS</span><span style="text-align:right;">AST</span><span style="text-align:right;">EFF</span>
+        </div>
+        <sc-for list="{{ leaders }}" as="p" hint-placeholder-count="5">
+          <a href="Player.dc.html" style="display:grid;grid-template-columns:28px 1fr 62px 62px 56px;gap:10px;align-items:center;padding:11px 6px;border-radius:8px;color:var(--fg);" style-hover="background:var(--surface2);">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);">{{ p.rank }}</span>
+            <span style="font-size:14px;">{{ p.name }} <span style="color:var(--muted);font-size:12px;">· {{ p.team }}</span></span>
+            <span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);">{{ p.pts }}</span>
+            <span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);">{{ p.ast }}</span>
+            <span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);font-weight:700;">{{ p.val }}</span>
+          </a>
+        </sc-for>
+        </sc-if>
+        <sc-if value="{{ showEmpty }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;justify-content:center;text-align:center;min-height:180px;padding:16px;font-size:13px;color:var(--muted);">{{ emptyMsg }}</div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <sc-if value="{{ liveShow }}" hint-placeholder-val="{{ false }}">
+  <section style="padding:2px 0 10px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
+      <span style="display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--fg);"><span style="width:8px;height:8px;border-radius:50%;background:#3FB950;"></span>Around the league · live</span>
+      <span style="font-size:11px;color:var(--muted);">balldontlie · {{ liveDate }} · updated {{ liveUpdated }}</span>
+    </div>
+    <sc-if value="{{ hasGames }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;">
+        <sc-for list="{{ liveGames }}" as="g" hint-placeholder-count="4">
+          <div style="background:var(--surface);border:1px solid var(--card-border);border-radius:10px;padding:12px 14px;">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--fg);">{{ g.line }}</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px;">{{ g.status }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+    <sc-if value="{{ noGames }}" hint-placeholder-val="{{ true }}">
+      <div style="font-size:13px;color:var(--muted);">No games today — the 2025-26 season is over. <a href="League.dc.html" style="color:var(--accent);">See live standings →</a></div>
+    </sc-if>
+  </section>
+  </sc-if>
+
+  <!-- top 5 gallery -->
+  <section style="padding:6px 0 18px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+      <div>
+        <div style="font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);font-weight:600;">Top 5 by rating</div>
+        <h2 style="font-size:22px;font-weight:700;letter-spacing:-.015em;margin:6px 0 0;color:var(--fg);">{{ galleryHeading }}</h2>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;max-width:640px;justify-content:flex-end;">
+        <sc-for list="{{ leagueTabs }}" as="t" hint-placeholder-count="8">
+          <button data-league="{{ t.key }}" onClick="{{ selectLeague }}" style="font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;padding:6px 12px;border-radius:16px;background:{{ t.bg }};color:{{ t.color }};border:1px solid {{ t.bd }};">{{ t.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;">
+      <sc-if value="{{ showEmpty }}" hint-placeholder-val="{{ true }}">
+        <div style="grid-column:1/-1;display:flex;align-items:center;justify-content:center;text-align:center;min-height:220px;padding:24px;font-size:14px;color:var(--muted);border:1px dashed var(--card-border);border-radius:12px;">{{ emptyMsg }}</div>
+      </sc-if>
+      <sc-for list="{{ galleryTop }}" as="g" hint-placeholder-count="5">
+        <div style="position:relative;aspect-ratio:3/4;border-radius:12px;overflow:hidden;border:1px solid var(--card-border);background:#20242c;">
+          <sc-if value="{{ g.photo }}" hint-placeholder-val="{{ false }}">
+            <img src="{{ g.photo }}" alt="{{ g.name }}" loading="lazy" referrerpolicy="no-referrer" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(1) contrast(1.04) brightness(1.02);">
+          </sc-if>
+          <sc-if value="{{ g.noPhoto }}" hint-placeholder-val="{{ true }}">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:700;letter-spacing:.02em;color:rgba(255,255,255,.22);">{{ g.initials }}</div>
+          </sc-if>
+          <div style="position:absolute;inset:0;background:#2b6bd6;mix-blend-mode:soft-light;opacity:.5;pointer-events:none;"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.9),rgba(0,0,0,0) 58%);pointer-events:none;"></div>
+          <div style="position:absolute;top:9px;left:9px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;background:rgba(0,0,0,.55);color:#fff;border-radius:6px;padding:3px 7px;pointer-events:none;">#{{ g.rank }}</div>
+          <div style="position:absolute;left:11px;right:11px;bottom:11px;pointer-events:none;">
+            <div style="font-size:14px;font-weight:700;color:#fff;letter-spacing:-.01em;">{{ g.name }}</div>
+            <div style="font-size:11px;color:#cfcfc8;margin-top:1px;">{{ g.team }}</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--accent);">{{ g.val }} EFF</span>
+              <a href="Player.dc.html" style="font-size:11px;color:var(--fg);pointer-events:auto;">View →</a>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-top:12px;">Player photos are linked from each competition's official source via <code style="font-family:'JetBrains Mono',monospace;">photo_url</code> — referenced, never stored.</div>
+  </section>
+
+  <!-- feature 1 -->
+  <section style="padding:56px 0;border-top:1px solid var(--hairline);">
+    <div style="display:flex;gap:56px;align-items:center;flex-wrap:wrap;">
+      <div style="flex:1;min-width:280px;max-width:380px;">
+        <div style="font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);font-weight:600;">Data that crosses borders</div>
+        <h2 style="font-size:22px;font-weight:700;letter-spacing:-.015em;margin:8px 0 0;color:var(--fg);">A transfer, followed start to finish</h2>
+        <p style="font-size:16px;line-height:1.6;color:var(--muted);margin:14px 0 0;">When a player moves from one league to another, we follow their full trail — statistics included. Every move is detected by comparing each team's roster between updates.</p>
+      </div>
+      <div style="flex:1.2;min-width:300px;">
+        <div style="background:var(--surface);border:1px solid var(--card-border);border-radius:10px;padding:6px;">
+          <sc-for list="{{ featureTransfers }}" as="t" hint-placeholder-count="4">
+            <div style="display:flex;justify-content:space-between;gap:16px;padding:13px 12px;border-radius:8px;" style-hover="background:var(--surface2);">
+              <span style="font-size:14px;color:var(--fg);">{{ t.player }} <span style="color:{{ t.toColor }};">— {{ t.route }}</span></span>
+              <span style="color:var(--muted);font-size:13px;font-family:'JetBrains Mono',monospace;white-space:nowrap;">{{ t.date }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- feature 2 -->
+  <section style="padding:56px 0;border-top:1px solid var(--hairline);">
+    <div style="max-width:620px;">
+      <div style="font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);font-weight:600;">Numbers, not rumours</div>
+      <h2 style="font-size:22px;font-weight:700;letter-spacing:-.015em;margin:8px 0 0;color:var(--fg);">One source of truth per league</h2>
+      <p style="font-size:16px;line-height:1.6;color:var(--muted);margin:14px 0 0;">Every statistic comes from its competition's official source, never mixed with unverified data. Less noise, more clarity — every figure we show has a reason to be there.</p>
+    </div>
+  </section>
+
+  <!-- leagues strip -->
+  <div style="padding:44px 0;border-top:1px solid var(--hairline);text-align:center;">
+    <div style="font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);font-weight:600;">Leagues covered</div>
+    <div style="display:flex;justify-content:center;align-items:flex-end;gap:clamp(24px,4vw,52px);margin-top:32px;flex-wrap:wrap;">
+      <sc-for list="{{ leaguesCovered }}" as="l" hint-placeholder-count="12">
+        <a href="League.dc.html" style="display:flex;flex-direction:column;align-items:center;gap:11px;color:var(--muted);" style-hover="color:var(--fg);">
+          <span style="height:42px;display:flex;align-items:center;justify-content:center;">
+            <sc-if value="{{ l.hasLogo }}" hint-placeholder-val="{{ false }}">
+              <img src="{{ l.logo }}" alt="{{ l.name }}" style="height:42px;width:auto;max-width:150px;object-fit:contain;filter:{{ l.logoFilter }};">
+            </sc-if>
+            <sc-if value="{{ l.noLogo }}" hint-placeholder-val="{{ true }}">
+              <span style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:22px;letter-spacing:-.02em;color:var(--fg);">{{ l.abbr }}</span>
+            </sc-if>
+          </span>
+          <span style="font-size:12px;font-weight:600;">{{ l.name }}</span>
+        </a>
+      </sc-for>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-top:16px;">Official crests where available.</div>
+  </div>
+
+  <!-- wordmark -->
+  <div style="padding:56px 0 0;border-top:1px solid var(--hairline);overflow:hidden;text-align:center;line-height:.82;">
+    
+  </div>
+
+  <footer style="padding:34px 0 10px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;">
+    <div style="font-size:13px;color:var(--muted);line-height:2;min-width:120px;">
+      <div style="color:var(--fg);font-weight:600;margin-bottom:8px;">basket atlas</div>
+      <a href="Players.dc.html" style="display:block;color:var(--muted);">Players</a>
+      <a href="League.dc.html" style="display:block;color:var(--muted);">Leagues</a>
+      <a href="Transfers.dc.html" style="display:block;color:var(--muted);">Transfers</a>
+      <a href="News.dc.html" style="display:block;color:var(--muted);">News</a>
+    </div>
+    <div style="font-size:13px;color:var(--muted);line-height:2;min-width:120px;">
+      <div style="color:var(--fg);font-weight:600;margin-bottom:8px;">Contact</div>
+      <a href="#" style="display:block;color:var(--muted);">hola@basketatlas.com</a>
+    </div>
+    <div style="font-size:13px;color:var(--muted);line-height:2;min-width:120px;">
+      <div style="color:var(--fg);font-weight:600;margin-bottom:8px;">Social</div>
+      <a href="#" style="display:block;color:var(--muted);">Instagram</a>
+      <a href="#" style="display:block;color:var(--muted);">X</a>
+    </div>
+    <div style="font-size:13px;color:var(--muted);line-height:2;min-width:120px;">
+      <div style="color:var(--fg);font-weight:600;margin-bottom:8px;">Data source</div>
+      <span>NBA.com · Basketball-Reference · 2025-26</span>
+    </div>
+  </footer>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { league: 'nba', q: '', theme: 'dark', liveGames: [], liveDate: '', liveUpdated: '', liveReady: false };
+
+  componentDidMount() {
+    const api = window.NBAApi;
+    if (!api || !api.hasKey()) return;
+    const today = new Date().toISOString().slice(0, 10);
+    api.getGamesByDate(today, { ttl: 20000 }).then((g) => {
+      const games = (g.data || []).map((x) => {
+        const h = x.home_team || {}, a = x.visitor_team || {};
+        const sc = (x.home_team_score || x.visitor_team_score);
+        return {
+          line: (a.abbreviation || '?') + (sc ? ' ' + (x.visitor_team_score || 0) : '') + ' @ ' + (h.abbreviation || '?') + (sc ? ' ' + (x.home_team_score || 0) : ''),
+          status: (x.status || '').replace('T', ' ').slice(0, 16),
+        };
+      });
+      this.setState({ liveGames: games, liveDate: today, liveUpdated: new Date().toLocaleTimeString(), liveReady: true });
+    }).catch(() => { this.setState({ liveReady: true, liveDate: today }); });
+  }
+
+  renderVals() {
+    const ACCENT = 'var(--accent)', MUTED = 'var(--muted)';
+    const f1 = (n) => n.toFixed(1);
+
+    const DATA = {
+      nba: { label: 'NBA', rows: [
+        { name: 'N. Jokić',   team: 'Denver',        pts: 28.2, ast: 10.7, val: 50.9 },
+        { name: 'L. Dončić',  team: 'LA Lakers',     pts: 33.5, ast: 8.3,  val: 48.9 },
+        { name: 'S. Gilgeous-Alexander', team: 'Oklahoma City', pts: 31.1, ast: 6.6, val: 42.3 },
+        { name: 'V. Wembanyama', team: 'San Antonio', pts: 24.8, ast: 3.8,  val: 41.1 },
+        { name: 'C. Cunningham', team: 'Detroit',     pts: 24.5, ast: 9.9,  val: 39.7 },
+      ] },
+    };
+
+    const chip = (a) => a ? { bg: ACCENT, color: 'var(--on-accent)', bd: ACCENT } : { bg: 'transparent', color: MUTED, bd: 'var(--border)' };
+    const LEAGUES = [
+      { key: 'nba', label: 'NBA' }, { key: 'euro', label: 'EuroLeague' }, { key: 'acb', label: 'ACB' },
+      { key: 'lba', label: 'LBA' }, { key: 'bbl', label: 'BBL' }, { key: 'gbl', label: 'GBL' },
+      { key: 'lnb', label: 'LNB' }, { key: 'bsl', label: 'BSL' }, { key: 'aba', label: 'ABA' },
+      { key: 'vtb', label: 'VTB' }, { key: 'bcl', label: 'BCL' }, { key: 'eurocup', label: 'EuroCup' },
+      { key: 'nbl', label: 'NBL' }, { key: 'bleague', label: 'B.League' }, { key: 'cba', label: 'CBA' },
+      { key: 'kbl', label: 'KBL' }, { key: 'pba', label: 'PBA' },
+    ];
+    const leagueTabs = LEAGUES.map((l) => ({ key: l.key, label: l.label, ...chip(this.state.league === l.key) }));
+    const selectedLeague = LEAGUES.find((l) => l.key === this.state.league) || null;
+    const cur = this.state.league ? DATA[this.state.league] : null;
+    const hasLeague = !!this.state.league;
+    const hasData = !!cur;
+    const emptyMsg = !hasLeague ? 'Pick a league to see its Top 5 by efficiency.' : (hasData ? '' : selectedLeague.label + ' data coming soon.');
+    const leadersCaption = !hasLeague ? 'EFF leaders' : 'EFF leaders · ' + (hasData ? cur.label : selectedLeague.label);
+    const galleryHeading = !hasLeague ? 'Pick a league' : (hasData ? cur.label : selectedLeague.label) + ' leaders';
+    const leaders = hasData ? cur.rows.map((p, i) => ({ rank: i + 1, name: p.name, team: p.team, pts: f1(p.pts), ast: f1(p.ast), val: f1(p.val) })) : [];
+
+    const featureTransfers = [
+      { player: 'G. Antetokounmpo', route: 'Milwaukee → Miami', date: '06 Jul', cross: false },
+      { player: 'Ja Morant', route: 'Memphis → Portland', date: '03 Jul', cross: false },
+      { player: 'L. Ball', route: 'Charlotte (East) → Minnesota (West)', date: '02 Jul', cross: true },
+      { player: 'M. Smart', route: 'LA Lakers → Houston', date: '01 Jul', cross: false },
+    ].map((t) => ({ ...t, toColor: t.cross ? ACCENT : MUTED }));
+
+    const ROSTER = [
+      { num: 77, name: 'L. Dončić', team: 'LA Lakers', league: 'NBA', pos: 'PG', nat: 'Slovenia', val: 48.9 },
+      { num: 15, name: 'N. Jokić', team: 'Denver', league: 'NBA', pos: 'C', nat: 'Serbia', val: 50.9 },
+      { num: 2,  name: 'S. Gilgeous-Alexander', team: 'Oklahoma City', league: 'NBA', pos: 'PG', nat: 'Canada', val: 42.3 },
+      { num: 1,  name: 'V. Wembanyama', team: 'San Antonio', league: 'NBA', pos: 'C', nat: 'France', val: 41.1 },
+      { num: 2,  name: 'C. Cunningham', team: 'Detroit', league: 'NBA', pos: 'PG', nat: 'USA', val: 39.7 },
+      { num: 5,  name: 'A. Edwards', team: 'Minnesota', league: 'NBA', pos: 'SG', nat: 'USA', val: 37.5 },
+      { num: 7,  name: 'J. Brown', team: 'Boston', league: 'NBA', pos: 'SF', nat: 'USA', val: 38.0 },
+      { num: 0,  name: 'T. Maxey', team: 'Philadelphia', league: 'NBA', pos: 'PG', nat: 'USA', val: 38.8 },
+      { num: 7,  name: 'K. Durant', team: 'Houston', league: 'NBA', pos: 'SF', nat: 'USA', val: 35.6 },
+      { num: 1,  name: 'D. Booker', team: 'Phoenix', league: 'NBA', pos: 'SG', nat: 'USA', val: 33.8 },
+      { num: 1,  name: 'L. Ball', team: 'Charlotte', league: 'NBA', pos: 'PG', nat: 'USA', val: 35.6 },
+      { num: 11, name: 'J. Brunson', team: 'New York', league: 'NBA', pos: 'PG', nat: 'USA', val: 35.0 },
+      { num: 32, name: 'K. Towns', team: 'New York', league: 'NBA', pos: 'C', nat: 'USA', val: 38.2 },
+      { num: 32, name: 'C. Flagg', team: 'Dallas', league: 'NBA', pos: 'SF', nat: 'USA', val: 32.4 },
+      { num: 28, name: 'A. Şengün', team: 'Houston', league: 'NBA', pos: 'C', nat: 'Türkiye', val: 34.5 },
+    ];
+    const norm = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const q = norm(this.state.q.trim());
+    const hasQuery = q.length > 0;
+    // Relevance ranking: exact name > name-prefix > last-name prefix > team/country > loose contains.
+    const scoreOf = (p) => {
+      const name = norm(p.name), team = norm(p.team), nat = norm(p.nat), league = norm(p.league), pos = norm(p.pos);
+      const words = name.split(/[.\s]+/).filter(Boolean);
+      if (name === q) return 100;
+      if (name.startsWith(q)) return 92;
+      if (words.some((w) => w.startsWith(q))) return 84;
+      if (team.startsWith(q) || nat.startsWith(q)) return 60;
+      if (name.includes(q)) return 52;
+      if (team.includes(q)) return 40;
+      if (nat.includes(q)) return 32;
+      if (league.includes(q) || pos.includes(q)) return 18;
+      return 0;
+    };
+    const matches = hasQuery
+      ? ROSTER.map((p) => ({ p, s: scoreOf(p) })).filter((x) => x.s > 0)
+          .sort((a, b) => (b.s - a.s) || (b.p.val - a.p.val)).map((x) => x.p)
+      : [];
+    const searchResults = matches.slice(0, 6).map((p) => ({ ...p, val: f1(p.val) }));
+
+    const initials = (n) => n.replace(/[^A-Za-zÀ-ÿ.\s]/g, '').split(/[.\s]+/).filter(Boolean).map((s) => s[0]).slice(0, 2).join('').toUpperCase();
+    // photo_url comes from each league's official source (e.g. static.acb.com), linked by URL — never stored. No photo → clean initials fallback.
+    const galleryTop = hasData ? cur.rows.map((p, i) => {
+      const photo = p.photo || '';
+      return { rank: i + 1, name: p.name, team: p.team, val: f1(p.val), photo, noPhoto: !photo, initials: initials(p.name) };
+    }) : [];
+
+    return {
+      liveShow: this.state.liveReady, liveGames: this.state.liveGames,
+      hasGames: this.state.liveGames.length > 0, noGames: this.state.liveReady && this.state.liveGames.length === 0,
+      liveDate: this.state.liveDate, liveUpdated: this.state.liveUpdated,
+      leagueLabel: cur ? cur.label : '', leadersCaption, galleryHeading, hasData, hasLeague, showEmpty: !hasData, emptyMsg, leagueTabs, leaders, featureTransfers, galleryTop,
+      leaguesCovered: [
+        { name: 'NBA', abbr: 'NBA', size: '15px', logo: 'assets/logos/nba.png', logoBg: '#FFFFFF' },
+        { name: 'EuroLeague', abbr: 'EL', size: '20px', logo: 'assets/logos/euroleague.png', logoBg: '#FFFFFF' },
+        { name: 'ACB', abbr: 'ACB', size: '15px', logo: 'assets/logos/acb.png' },
+        { name: 'LBA', abbr: 'LBA', size: '15px', logo: 'assets/logos/lba.svg', logoBg: '#FFFFFF' },
+        { name: 'BBL', abbr: 'BBL', size: '15px', logo: 'assets/logos/bbl.png', logoBg: '#101010' },
+        { name: 'GBL', abbr: 'GBL', size: '15px', logo: 'assets/logos/gbl.png', logoBg: '#FFFFFF' },
+        { name: 'LNB', abbr: 'LNB', size: '15px', logo: 'assets/logos/lnb.png' },
+        { name: 'BSL', abbr: 'BSL', size: '15px', logo: 'assets/logos/bsl.png' },
+        { name: 'ABA', abbr: 'ABA', size: '15px', logo: 'assets/logos/aba.png' },
+        { name: 'VTB', abbr: 'VTB', size: '15px', logo: 'assets/logos/vtb.png' },
+        { name: 'BCL', abbr: 'BCL', size: '15px', logo: 'assets/logos/bcl.svg' },
+        { name: 'EuroCup', abbr: 'EC', size: '20px', logo: 'assets/logos/eurocup.png' },
+        { name: 'NBL', abbr: 'NBL', size: '15px', logo: 'assets/logos/nbl.png' },
+        { name: 'B.League', abbr: 'BLJ', size: '15px', logo: 'assets/logos/bleague.svg' },
+        { name: 'CBA', abbr: 'CBA', size: '15px', logo: 'assets/logos/cba.svg' },
+        { name: 'KBL', abbr: 'KBL', size: '15px', logo: 'assets/logos/kbl.svg' },
+        { name: 'PBA', abbr: 'PBA', size: '15px', logo: 'assets/logos/pba.svg' },
+      ].map((l, i, arr) => {
+        const hue = Math.round((360 / arr.length) * i);
+        const hasLogo = !!l.logo;
+        const logoFilter = this.state.theme === 'light' ? 'brightness(0)' : 'brightness(0) invert(1)';
+        return {
+          ...l, slotId: 'league-logo-' + l.name.toLowerCase().replace(/[^a-z]/g, ''),
+          hasLogo, noLogo: !hasLogo, logoFilter,
+        };
+      }),
+      q: this.state.q, hasQuery, searchResults, noResults: hasQuery && matches.length === 0,
+      theme: this.state.theme, isLight: this.state.theme === 'light', isDark: this.state.theme !== 'light',
+      toggleTheme: () => this.setState((s) => ({ theme: s.theme === 'light' ? 'dark' : 'light' })),
+      onSearch: (e) => this.setState({ q: e.currentTarget.value }),
+      selectLeague: (e) => this.setState({ league: e.currentTarget.dataset.league }),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noticias de Baloncesto — ACB, EuroLiga, NBA y Ligas Europeas | Basket Atlas</title>
+<meta name="description" content="Titulares de medios especializados y cuentas de referencia en X sobre la NBA, la EuroLiga, la ACB y otras grandes ligas de baloncesto, reunidos en un solo lugar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#181818; --ink:#EFEFE4; --muted:#8A8A85; --line:#222222; --card:#181818; --card-line:rgba(255,255,255,0.1);
+    --accent:#81ADEC;
+    --fs-micro:11px; --fs-eyebrow:12px; --fs-caption:13px; --fs-body:14px;
+    --fs-lead:16px; --fs-stat:24px; --fs-title:30px; --fs-hero:36px;
+  }
+  html.light{
+    --bg:#EFEFE4; --ink:#181818; --muted:#79786F; --line:#D7D7D6; --card:#FCFCF9; --card-line:#D7D7D6;
+    --accent:#5D8CD7;
+  }
+  html{background:var(--bg);}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;
+    transition:background .15s ease, color .15s ease;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+  .mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
+
+  header{display:flex;justify-content:space-between;align-items:center;padding:22px 0;}
+  .logo{font-weight:700;font-size:15px;display:flex;align-items:center;}
+  .logo svg{height:22px;width:auto;display:block;}
+  nav{display:flex;gap:20px;align-items:center;}
+  nav>*{margin-right:14px;}
+  nav>*:last-child{margin-right:0;}
+  nav a{font-size:14px;font-weight:500;color:var(--muted);}
+  nav a.active{color:var(--ink);}
+  .btn-ghost{
+    font-family:inherit;font-size:14px;background:none;color:var(--muted);
+    border:1px solid var(--line);border-radius:8px;padding:9px 16px;cursor:pointer;font-weight:500;
+  }
+  .btn-ghost:hover{color:var(--ink);border-color:var(--muted);}
+
+  h1.page-title{font-size:var(--fs-title);font-weight:700;margin:44px 0 8px;letter-spacing:-0.015em;}
+  p.page-sub{font-size:var(--fs-lead);color:var(--muted);margin:0 0 40px;max-width:560px;line-height:1.6;}
+
+  .section-label{font-size:var(--fs-eyebrow);font-weight:600;color:var(--muted);margin-bottom:18px;display:flex;
+    justify-content:space-between;align-items:baseline;}
+  .section-note{font-size:var(--fs-eyebrow);color:var(--muted);font-weight:400;}
+
+  .account-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:56px;}
+  .account-card{background:var(--card);border:1px solid var(--card-line);border-radius:10px;padding:16px 14px;}
+  .account-card:hover{border-color:var(--muted);}
+  .account-handle{font-size:var(--fs-body);font-weight:700;}
+  .account-desc{font-size:var(--fs-eyebrow);color:var(--muted);margin:4px 0 10px;line-height:1.5;}
+  .account-tag{font-size:var(--fs-micro);color:var(--accent);border:1px solid var(--accent);border-radius:10px;
+    padding:2px 8px;display:inline-block;font-weight:600;}
+  .account-follow{font-size:var(--fs-caption);color:var(--muted);display:block;margin-top:10px;}
+
+  .headline-row{display:flex;gap:16px;padding:14px;border-radius:10px;align-items:baseline;}
+  .headline-row:hover{background:var(--card);}
+  .headline-source{font-size:var(--fs-micro);color:var(--accent);width:130px;flex-shrink:0;font-weight:600;}
+  .headline-text{font-size:var(--fs-body);flex:1;}
+  .headline-time{font-size:var(--fs-caption);color:var(--muted);width:60px;text-align:right;flex-shrink:0;}
+
+  .rss-note{background:var(--card);border:1px solid var(--card-line);border-radius:10px;padding:14px 16px;font-size:var(--fs-caption);color:#8C8B85;
+    margin-top:20px;line-height:1.6;}
+
+  footer{border-top:1px solid var(--line);padding:20px 0;margin-top:40px;display:flex;
+    justify-content:space-between;font-size:var(--fs-caption);color:var(--muted);}
+
+  @media(max-width:720px){
+    .account-grid{grid-template-columns:repeat(2,1fr);}
+    .headline-row{flex-direction:column;gap:4px;}
+    .headline-source{width:auto;}
+    .headline-time{width:auto;text-align:left;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="logo"><svg viewBox="0 0 660 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Basket Atlas"><g fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round"><circle cx="70" cy="100" r="52"/><path d="M18,100 H122"/><path d="M70,48 A26,52 0 0 1 70,152"/><path d="M70,48 A26,52 0 0 0 70,152"/></g><text x="158" y="126" font-family="Inter, Helvetica, Arial, sans-serif" font-weight="700" font-size="72" letter-spacing="-1" fill="currentColor">Basket Atlas</text></svg></div>
+    <nav>
+      <a href="home.html" data-es="Ligas" data-en="Leagues">Ligas</a>
+      <a href="#" data-es="Jugadores" data-en="Players">Jugadores</a>
+      <a href="transfers.html" data-es="Traspasos" data-en="Transfers">Traspasos</a>
+      <a href="noticias.html" class="active" data-es="Noticias" data-en="News">Noticias</a>
+      <button id="theme-toggle" class="btn-ghost">Modo claro</button>
+      <button id="lang-toggle" class="btn-ghost">EN</button>
+    </nav>
+  </header>
+
+  <h1 class="page-title" data-es="Noticias" data-en="News">Noticias</h1>
+  <p class="page-sub" data-es="Lo que se dice sobre las ligas cubiertas, reunido en un solo sitio: cuentas de referencia en X para seguir en directo, y titulares de medios especializados por RSS." data-en="What's being said about the leagues we cover, in one place: reference accounts on X to follow live, and headlines from specialist outlets via RSS.">Lo que se dice sobre las ligas cubiertas, reunido en un solo sitio: cuentas de referencia en X para seguir en directo, y titulares de medios especializados por RSS.</p>
+
+  <div class="section-label">
+    <span data-es="Medios especializados" data-en="Specialist media">Medios especializados</span>
+    <span class="section-note" data-es="Titulares de ejemplo, no reales" data-en="Sample headlines, not real">Titulares de ejemplo, no reales</span>
+  </div>
+  <div id="headline-list"></div>
+  <div class="rss-note" data-es="Estos titulares se alimentarían por RSS de cada medio (Eurohoops, Encestando, Gigantes del Basket... todos publican feed propio) — es la vía legítima para esto, a diferencia del scraping de sus webs." data-en="These headlines would be fed by each outlet's own RSS feed (Eurohoops, Encestando, Gigantes del Basket... they all publish one) — the legitimate way to do this, unlike scraping their sites.">Estos titulares se alimentarían por RSS de cada medio (Eurohoops, Encestando, Gigantes del Basket... todos publican feed propio) — es la vía legítima para esto, a diferencia del scraping de sus webs.</div>
+
+  <div class="section-label" style="margin-top:56px;">
+    <span data-es="Cuentas a seguir en X" data-en="Accounts to follow on X">Cuentas a seguir en X</span>
+    <span class="section-note" data-es="Enlaces a perfiles públicos, sin contenido incrustado" data-en="Links to public profiles, no embedded content">Enlaces a perfiles públicos, sin contenido incrustado</span>
+  </div>
+  <div class="account-grid" id="account-grid"></div>
+
+  <footer>
+    <span>© basket atlas</span>
+    <span>hola@basketatlas.com</span>
+  </footer>
+</div>
+
+<script>
+const ACCOUNTS = [
+  {handle:'@EuroLeague', es:'Cuenta oficial de la EuroLiga', en:'Official EuroLeague account', tag:'EL', url:'https://twitter.com/EuroLeague'},
+  {handle:'@ACBCOM', es:'Cuenta oficial de la Liga Endesa', en:'Official Liga Endesa account', tag:'ACB', url:'https://twitter.com/ACBCOM'},
+  {handle:'@LegaBasketA', es:'Cuenta oficial de la Lega Basket Serie A', en:'Official Lega Basket Serie A account', tag:'LBA', url:'https://twitter.com/LegaBasketA'},
+  {handle:'@easyCreditBBL', es:'Cuenta oficial de la Basketball Bundesliga', en:'Official Basketball Bundesliga account', tag:'BBL', url:'https://twitter.com/easyCreditBBL'},
+  {handle:'@StoiximanGBL', es:'Cuenta oficial de la Greek Basketball League', en:'Official Greek Basketball League account', tag:'GBL', url:'https://twitter.com/esakegr'},
+  {handle:'@NBA', es:'Cuenta oficial de la NBA', en:'Official NBA account', tag:'NBA', url:'https://twitter.com/NBA'},
+  {handle:'@Eurohoops', es:'Noticias y fichajes de baloncesto europeo', en:'European basketball news and signings', tag:'MEDIO', url:'https://twitter.com/eurohoops'},
+  {handle:'@Sportando', es:'Rumores y fichajes internacionales', en:'International rumours and signings', tag:'MEDIO', url:'https://twitter.com/sportando_com'},
+  {handle:'@encestando_es', es:'Baloncesto español al detalle', en:'Spanish basketball in detail', tag:'MEDIO', url:'https://twitter.com/encestando_es'},
+];
+
+let currentLang = 'es';
+const VER_PERFIL = { es: 'Ver perfil ↗', en: 'View profile ↗' };
+
+function renderAccounts(){
+  document.getElementById('account-grid').innerHTML = ACCOUNTS.map(a => `
+    <a class="account-card" href="${a.url}" target="_blank" rel="noopener">
+      <div class="account-handle">${a.handle}</div>
+      <div class="account-desc">${a[currentLang]}</div>
+      <div class="account-tag">${a.tag}</div>
+      <span class="account-follow">${VER_PERFIL[currentLang]}</span>
+    </a>
+  `).join('');
+}
+renderAccounts();
+
+const HEADLINES = [
+  {source:'EUROHOOPS', es:'Real Madrid oficializa el fichaje de un nuevo ala-pívot para la próxima temporada', en:'Real Madrid officially signs a new power forward for next season', time:'2 h'},
+  {source:'ENCESTANDO', es:'La ACB abre el mercado de tanteo con siete jugadores en la lista', en:'The ACB opens its right-of-first-refusal market with seven players listed', time:'5 h'},
+  {source:'GIGANTES DEL BASKET', es:'Así queda el calendario de la Liga Endesa tras el parón de selecciones', en:'Here is how the Liga Endesa schedule looks after the national team break', time:'8 h'},
+  {source:'SPORTANDO', es:'Un base internacional negocia su salida de la Lega Basket Serie A', en:'An international point guard negotiates his exit from Lega Basket Serie A', time:'11 h'},
+  {source:'ACB.COM', es:'Comunicado oficial sobre el calendario de la Copa del Rey 2027', en:'Official statement on the 2027 Copa del Rey schedule', time:'1 d'},
+];
+
+function renderHeadlines(){
+  document.getElementById('headline-list').innerHTML = HEADLINES.map(h => `
+    <div class="headline-row">
+      <div class="headline-source">${h.source}</div>
+      <div class="headline-text">${h[currentLang]}</div>
+      <div class="headline-time">${h.time}</div>
+    </div>
+  `).join('');
+}
+renderHeadlines();
+
+const themeToggle = document.getElementById('theme-toggle');
+const langToggle = document.getElementById('lang-toggle');
+const THEME_LABEL = { es: ['Modo claro', 'Modo oscuro'], en: ['Light mode', 'Dark mode'] };
+
+function applyTheme(light){
+  document.documentElement.classList.toggle('light', light);
+  themeToggle.textContent = THEME_LABEL[currentLang][light ? 1 : 0];
+  try { localStorage.setItem('basketatlas-theme', light ? 'light' : 'dark'); } catch(e) {}
+}
+function isLight(){ return document.documentElement.classList.contains('light'); }
+
+function applyLang(lang){
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-es]').forEach(el => { el.textContent = el.dataset[lang]; });
+  langToggle.textContent = lang === 'es' ? 'EN' : 'ES';
+  themeToggle.textContent = THEME_LABEL[currentLang][isLight() ? 1 : 0];
+  renderAccounts();
+  renderHeadlines();
+  try { localStorage.setItem('basketatlas-lang', lang); } catch(e) {}
+}
+
+let savedTheme = null, savedLang = null;
+try { savedTheme = localStorage.getItem('basketatlas-theme'); } catch(e) {}
+try { savedLang = localStorage.getItem('basketatlas-lang'); } catch(e) {}
+applyLang(savedLang === 'en' ? 'en' : 'es');
+applyTheme(savedTheme === 'light');
+
+themeToggle.addEventListener('click', () => applyTheme(!isLight()));
+langToggle.addEventListener('click', () => applyLang(currentLang === 'es' ? 'en' : 'es'));
+</script>
+</body>
+</html>

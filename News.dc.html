@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;background:#181818;color:#EFEFE4;font-family:'Inter',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;}
+  a{color:#EFEFE4;text-decoration:none;}
+</style>
+<script src="./nba-config.js"></script>
+</helmet>
+
+<div style="max-width:1080px;margin:0 auto;padding:0 24px 40px;">
+
+  <header style="display:flex;justify-content:space-between;align-items:center;padding:22px 0;">
+    <a href="Home.dc.html" style="display:flex;align-items:center;color:#EFEFE4;"><svg viewBox="0 0 660 200" style="height: 54px; width: 225px; display: block" role="img" aria-label="Basket Atlas"><g fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round"><circle cx="70" cy="100" r="52"></circle><path d="M18,100 H122"></path><path d="M70,48 A26,52 0 0 1 70,152"></path><path d="M70,48 A26,52 0 0 0 70,152"></path></g><text x="158" y="126" font-family="Inter, Helvetica, Arial, sans-serif" font-weight="700" font-size="72" letter-spacing="-1" fill="currentColor">Basket Atlas</text></svg></a>
+    <nav style="display:flex;gap:24px;align-items:center;">
+      <a href="Players.dc.html" style="font-size:14px;font-weight:500;color:#8A8A85;">Players</a>
+      <a href="League.dc.html" style="font-size:14px;font-weight:500;color:#8A8A85;">Leagues</a>
+      <a href="Transfers.dc.html" style="font-size:14px;font-weight:500;color:#8A8A85;">Transfers</a>
+      <a href="News.dc.html" style="font-size:14px;font-weight:600;color:#EFEFE4;">News</a>
+      <a href="Players.dc.html" style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:#8A8A85;border:1px solid #333;border-radius:8px;padding:7px 12px;" style-hover="border-color:#81ADEC;color:#EFEFE4;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>Search</a>
+      <span style="font-size:12px;font-weight:600;color:#8A8A85;border:1px solid #333;border-radius:7px;padding:6px 10px;">EN</span>
+    </nav>
+  </header>
+
+  <!-- featured -->
+  <a href="#" style="display:block;background:#1c1c1c;border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;margin-top:14px;color:#EFEFE4;">
+    <div style="display:flex;flex-wrap:wrap;">
+      <div style="flex:1.1;min-width:260px;background:linear-gradient(135deg,#20202a,#181820);position:relative;min-height:220px;display:flex;align-items:flex-end;padding:24px;">
+        <div style="position:absolute;top:-30px;right:10px;font-size:200px;line-height:1;font-weight:700;color:#81ADEC;opacity:.08;font-family:'JetBrains Mono',monospace;">NY</div>
+        <div style="width:80px;height:104px;border-radius:8px;overflow:hidden;"><svg viewBox="0 0 200 260" width="100%" height="100%"><rect width="200" height="260" fill="#2a2a2a"></rect><circle cx="100" cy="72" r="30" fill="#54544f"></circle><path d="M60 260 L60 190 Q60 140 100 135 Q140 140 140 190 L140 260 Z" fill="#54544f"></path></svg></div>
+      </div>
+      <div style="flex:1.4;min-width:280px;padding:30px;">
+        <div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#81ADEC;font-weight:600;">Featured · Finals</div>
+        <h2 style="font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin:12px 0 0;">Knicks win first NBA title since 1973, beating the Spurs 4–1</h2>
+        <p style="font-size:15px;line-height:1.6;color:#8A8A85;margin:14px 0 0;">New York complete the first NBA Cup + championship “double,” capped by a record 29-point Game 4 comeback — OG Anunoby’s tip-in with 1.2 seconds left, instantly dubbed the “Hand of OG.”</p>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A8A85;margin-top:18px;">13 Jun 2026 · 5 min read</div>
+      </div>
+    </div>
+  </a>
+
+  <!-- categories -->
+  <sc-if value="{{ newsShow }}" hint-placeholder-val="{{ false }}">
+  <div style="margin-top:24px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+      <span style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#EFEFE4;"><span style="width:8px;height:8px;border-radius:50%;background:#3FB950;"></span>Latest · live</span>
+      <span style="font-size:11px;color:#8A8A85;">{{ newsSource }} · updated {{ newsUpdated }}</span>
+    </div>
+    <div style="background:#1c1c1c;border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;">
+      <sc-for list="{{ liveNews }}" as="n" hint-placeholder-count="5">
+        <a href="{{ n.link }}" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 16px;border-bottom:1px solid #222;color:#EFEFE4;" style-hover="background:#242424;">
+          <span style="font-size:14px;font-weight:600;line-height:1.35;">{{ n.title }}</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A8A85;white-space:nowrap;flex-shrink:0;">{{ n.time }}</span>
+        </a>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+  <sc-if value="{{ newsErr }}" hint-placeholder-val="{{ false }}">
+    <div style="margin-top:20px;font-size:12px;color:#8A8A85;">Live feed unavailable right now — showing curated headlines below.</div>
+  </sc-if>
+
+  <div style="font-size:12px;font-weight:600;color:#8A8A85;margin:28px 0 0;">Editorial</div>
+  <div style="display:flex;gap:8px;padding:12px 0 20px;flex-wrap:wrap;">
+    <sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
+      <button data-cat="{{ c.key }}" onClick="{{ selectCat }}" style="font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;padding:8px 16px;border-radius:20px;background:{{ c.bg }};color:{{ c.color }};border:1px solid {{ c.bd }};">{{ c.label }}</button>
+    </sc-for>
+  </div>
+
+  <!-- grid -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;">
+    <sc-for list="{{ articles }}" as="a" hint-placeholder-count="6">
+      <a href="#" style="display:flex;flex-direction:column;background:#1c1c1c;border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;color:#EFEFE4;" style-hover="border-color:rgba(255,255,255,.2);">
+        <div style="height:120px;background:{{ a.thumb }};display:flex;align-items:flex-end;padding:14px;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#EFEFE4;background:rgba(0,0,0,.35);padding:4px 8px;border-radius:6px;">{{ a.league }}</span>
+        </div>
+        <div style="padding:18px;flex:1;display:flex;flex-direction:column;">
+          <div style="font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:#81ADEC;font-weight:600;">{{ a.cat }}</div>
+          <h3 style="font-size:17px;font-weight:700;letter-spacing:-.01em;line-height:1.25;margin:9px 0 0;">{{ a.title }}</h3>
+          <p style="font-size:13px;line-height:1.55;color:#8A8A85;margin:10px 0 0;flex:1;">{{ a.excerpt }}</p>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A8A85;margin-top:16px;">{{ a.date }}</div>
+        </div>
+      </a>
+    </sc-for>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;border-top:1px solid #222;padding-top:18px;margin-top:40px;font-size:12px;color:#8A8A85;">
+    <span>© basket atlas</span><span>Data: NBA.com · Basketball-Reference · 2025-26</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { cat: 'all', liveNews: [], newsStatus: 'idle', newsSource: '', newsUpdated: '' };
+
+  componentDidMount() {
+    const feed = (typeof window !== 'undefined' && window.NBA_NEWS_RSS) || '';
+    if (!feed) return;
+    this.setState({ newsStatus: 'loading' });
+    const url = 'https://api.rss2json.com/v1/api.json?count=10&rss_url=' + encodeURIComponent(feed);
+    fetch(url).then((r) => r.json()).then((d) => {
+      if (!d || d.status !== 'ok' || !Array.isArray(d.items)) throw new Error('feed');
+      const rel = (dstr) => {
+        const t = new Date(dstr).getTime();
+        if (!t) return '';
+        const m = Math.floor((Date.now() - t) / 60000);
+        if (m < 1) return 'now';
+        if (m < 60) return m + 'm';
+        const h = Math.floor(m / 60);
+        if (h < 24) return h + 'h';
+        return Math.floor(h / 24) + 'd';
+      };
+      const items = d.items.slice(0, 8).map((it) => ({ title: it.title, link: it.link, time: rel(it.pubDate) }));
+      this.setState({ newsStatus: 'live', liveNews: items, newsSource: (d.feed && d.feed.title) || 'RSS', newsUpdated: new Date().toLocaleTimeString() });
+    }).catch(() => this.setState({ newsStatus: 'error' }));
+  }
+
+  renderVals() {
+    const ACCENT = '#81ADEC', MUTED = '#8A8A85';
+
+    const ARTICLES = [
+      { cat: 'Awards', catKey: 'awards', league: 'NBA', title: 'Shai Gilgeous-Alexander wins back-to-back MVP', excerpt: 'The Thunder guard averaged 31.1 points on the way to a second straight Kia MVP as OKC led the league with 64 wins.', date: '20 May 2026', thumb: 'linear-gradient(135deg,#243044,#1a2230)' },
+      { cat: 'Awards', catKey: 'awards', league: 'NBA', title: 'Wembanyama is unanimous Defensive Player of the Year', excerpt: 'San Antonio’s “Alien” led the NBA with 3.1 blocks per game and became the first unanimous DPOY in league history.', date: '12 May 2026', thumb: 'linear-gradient(135deg,#2a2436,#1e1a28)' },
+      { cat: 'Analysis', catKey: 'analysis', league: 'NBA', title: 'Luka Dončić takes the scoring crown at 33.5 PPG', excerpt: 'In his first full season with the Lakers, Dončić outscored the field and finished second in total points behind only SGA.', date: '16 Apr 2026', thumb: 'linear-gradient(135deg,#243828,#182619)' },
+      { cat: 'Analysis', catKey: 'analysis', league: 'NBA', title: 'Jokić leads the league in rebounds and assists', excerpt: 'The Denver center posted 12.9 boards and 10.7 dimes a night — a double-double average that reshapes the MVP debate.', date: '14 Apr 2026', thumb: 'linear-gradient(135deg,#38302a,#26201a)' },
+      { cat: 'Rookies', catKey: 'rookies', league: 'NBA', title: 'Cooper Flagg headlines the All-Rookie teams', excerpt: 'The No. 1 pick delivered 21.0 / 6.7 / 4.5 for Dallas and ran away with Rookie of the Year honors.', date: '20 May 2026', thumb: 'linear-gradient(135deg,#243044,#1a2230)' },
+      { cat: 'Transfers', catKey: 'transfers', league: 'NBA', title: 'Giannis leaves Milwaukee for Miami', excerpt: 'The two-time MVP forces the summer’s biggest move, headlining a Bucks–Heat blockbuster as free agency opens.', date: '06 Jul 2026', thumb: 'linear-gradient(135deg,#2a2436,#1e1a28)' },
+    ];
+
+    const CATS = [ { key: 'all', label: 'All' }, { key: 'transfers', label: 'Transfers' }, { key: 'analysis', label: 'Analysis' }, { key: 'awards', label: 'Awards' }, { key: 'rookies', label: 'Rookies' } ];
+    const chip = (a) => a ? { bg: ACCENT, color: '#101010', bd: ACCENT } : { bg: 'transparent', color: MUTED, bd: '#333' };
+    const cats = CATS.map((c) => ({ ...c, ...chip(c.key === this.state.cat) }));
+    const articles = ARTICLES.filter((a) => this.state.cat === 'all' ? true : a.catKey === this.state.cat);
+
+    return {
+      cats, articles,
+      newsShow: this.state.liveNews.length > 0, liveNews: this.state.liveNews,
+      newsSource: this.state.newsSource, newsUpdated: this.state.newsUpdated,
+      newsErr: this.state.newsStatus === 'error',
+      selectCat: (e) => this.setState({ cat: e.currentTarget.dataset.cat }),
+    };
+  }
+}
+</script>
+</body>
+</html>

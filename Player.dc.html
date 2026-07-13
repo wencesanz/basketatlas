@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;background:#181818;color:#EFEFE4;font-family:'Inter',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;}
+  a{color:#EFEFE4;text-decoration:none;}
+</style>
+</helmet>
+
+<div style="max-width:1080px;margin:0 auto;padding:0 24px 60px;">
+
+  <header style="display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid #222;">
+    <a href="Home.dc.html" style="display:flex;align-items:center;color:#EFEFE4;"><svg viewBox="0 0 660 200" style="height:34px;width:auto;display:block;" role="img" aria-label="Basket Atlas"><g fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round"><circle cx="70" cy="100" r="52"></circle><path d="M18,100 H122"></path><path d="M70,48 A26,52 0 0 1 70,152"></path><path d="M70,48 A26,52 0 0 0 70,152"></path></g><text x="158" y="126" font-family="Inter, Helvetica, Arial, sans-serif" font-weight="700" font-size="72" letter-spacing="-1" fill="currentColor">Basket Atlas</text></svg></a>
+    <nav style="display:flex;gap:24px;align-items:center;">
+      <a href="Players.dc.html" style="font-size:14px;font-weight:600;color:#EFEFE4;">Players</a>
+      <a href="League.dc.html" style="font-size:14px;font-weight:500;color:#8A8A85;">Leagues</a>
+      <a href="Transfers.dc.html" style="font-size:14px;font-weight:500;color:#8A8A85;">Transfers</a>
+      <a href="News.dc.html" style="font-size:14px;font-weight:500;color:#8A8A85;">News</a>
+      <a href="Players.dc.html" style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:#8A8A85;border:1px solid #333;border-radius:8px;padding:7px 12px;" style-hover="border-color:#81ADEC;color:#EFEFE4;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>Search</a>
+      <span style="font-size:12px;font-weight:600;color:#8A8A85;border:1px solid #333;border-radius:7px;padding:6px 10px;">EN</span>
+    </nav>
+  </header>
+
+  <div style="font-size:13px;color:#8A8A85;margin:22px 0 0;"><a href="League.dc.html" style="color:#8A8A85;">← NBA · Season leaders</a></div>
+
+  <!-- hero -->
+  <div style="position:relative;background:#1c1c1c;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:32px;overflow:hidden;margin-top:14px;">
+    <div style="position:absolute;top:-38px;right:8px;font-size:200px;line-height:1;font-weight:700;color:#fff;opacity:.05;font-family:'JetBrains Mono',monospace;">{{ playerNum }}</div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:28px;position:relative;">
+      <div style="flex:1;">
+        <div style="font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#81ADEC;font-weight:600;margin-bottom:10px;">{{ playerTeam }} · {{ playerLeague }}</div>
+        <div style="font-size:36px;font-weight:700;letter-spacing:-.02em;color:#EFEFE4;">{{ playerName }}</div>
+        <div style="font-size:14px;color:#B0AD9F;margin-top:6px;">{{ playerPos }} · {{ playerCountry }} · {{ playerHeight }}</div>
+        <div style="display:flex;gap:36px;margin-top:26px;flex-wrap:wrap;">
+          <div><div style="font-size:11px;color:#8A8A85;margin-bottom:3px;">Born</div><div style="font-size:14px;color:#EFEFE4;font-family:'JetBrains Mono',monospace;">{{ playerBorn }}</div></div>
+          <div><div style="font-size:11px;color:#8A8A85;margin-bottom:3px;">Age</div><div style="font-size:14px;color:#EFEFE4;font-family:'JetBrains Mono',monospace;">{{ playerAge }}</div></div>
+          <div><div style="font-size:11px;color:#8A8A85;margin-bottom:3px;">Nationality</div><div style="font-size:14px;color:#EFEFE4;">{{ playerCountry }}</div></div>
+          <div><div style="font-size:11px;color:#8A8A85;margin-bottom:3px;">At club since</div><div style="font-size:14px;color:#EFEFE4;font-family:'JetBrains Mono',monospace;">{{ playerSince }}</div></div>
+        </div>
+      </div>
+      <div style="width:150px;height:195px;flex-shrink:0;border-radius:10px;overflow:hidden;">
+        <svg viewBox="0 0 200 260" width="100%" height="100%"><rect width="200" height="260" fill="#232323"></rect><circle cx="100" cy="72" r="30" fill="#4a4a48"></circle><path d="M60 260 L60 190 Q60 140 100 135 Q140 140 140 190 L140 260 Z" fill="#4a4a48"></path></svg>
+      </div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:#8A8A85;margin:12px 2px 0;">Illustrated silhouette — official photography referenced from NBA.com, not stored</div>
+
+  <!-- season + mode controls -->
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;margin:36px 0 14px;flex-wrap:wrap;">
+    <div style="font-size:12px;font-weight:600;color:#8A8A85;">Season · {{ aSeasonLabel }} · PIR replaced by EFF (PTS+REB+AST+STL+BLK−TOV)</div>
+    <div style="display:flex;gap:8px;">
+      <sc-for list="{{ aModeTabs }}" as="t" hint-placeholder-count="2">
+        <button data-mode="{{ t.mode }}" onClick="{{ setModeA }}" style="font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;padding:7px 14px;border-radius:8px;background:{{ t.bg }};color:{{ t.color }};border:1px solid {{ t.bd }};">{{ t.label }}</button>
+      </sc-for>
+    </div>
+  </div>
+  <div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;margin-bottom:22px;">
+    <sc-for list="{{ aSeasonChips }}" as="c" hint-placeholder-count="7">
+      <button data-idx="{{ $index }}" onClick="{{ selectSeasonA }}" style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;white-space:nowrap;cursor:pointer;padding:7px 13px;border-radius:20px;background:{{ c.bg }};color:{{ c.color }};border:1px solid {{ c.bd }};">{{ c.label }}</button>
+    </sc-for>
+  </div>
+
+  <!-- stat grid -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:11px;">
+    <sc-for list="{{ aStatCells }}" as="c" hint-placeholder-count="8">
+      <div style="background:#1c1c1c;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:16px 15px;">
+        <div style="font-size:11px;color:#8A8A85;letter-spacing:.03em;text-transform:uppercase;margin-bottom:7px;">{{ c.label }}</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:#EFEFE4;">{{ c.value }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- chart -->
+  <div style="font-size:12px;font-weight:600;color:#8A8A85;margin:40px 0 14px;">Points per game by season</div>
+  <div style="background:#1c1c1c;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:24px 22px 18px;">
+    <div style="display:flex;align-items:flex-end;gap:16px;height:150px;">
+      <sc-for list="{{ aBars }}" as="b" hint-placeholder-count="7">
+        <div data-idx="{{ $index }}" onClick="{{ selectSeasonA }}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:8px;cursor:pointer;height:100%;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:{{ b.labColor }};font-weight:600;">{{ b.valTop }}</div>
+          <div style="width:100%;max-width:38px;height:{{ b.h }};background:{{ b.bg }};border-radius:5px 5px 0 0;"></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#8A8A85;">{{ b.season }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- transfers -->
+  <div style="font-size:12px;font-weight:600;color:#8A8A85;margin:40px 0 6px;">Transfer history</div>
+  <sc-for list="{{ transfers }}" as="t" hint-placeholder-count="4">
+    <div style="display:grid;grid-template-columns:56px 1fr 24px 1fr 66px;align-items:center;gap:12px;padding:14px 10px;border-radius:10px;" style-hover="background:#1c1c1c;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A8A85;">{{ t.year }}</div>
+      <div><div style="font-size:14px;font-weight:600;color:#EFEFE4;">{{ t.fromTeam }}</div><div style="font-size:11px;color:#8A8A85;margin-top:2px;">{{ t.fromLeague }}</div></div>
+      <div style="text-align:center;color:{{ t.arrowColor }};font-size:15px;">→</div>
+      <div><div style="font-size:14px;font-weight:600;color:#EFEFE4;">{{ t.toTeam }}</div><div style="font-size:11px;color:{{ t.toLeagueColor }};margin-top:2px;">{{ t.toLeague }}</div></div>
+      <div style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;color:{{ t.crossColor }};font-weight:600;">{{ t.tag }}</div>
+    </div>
+  </sc-for>
+
+  <!-- related videos -->
+  <div style="font-size:12px;font-weight:600;color:#8A8A85;margin:40px 0 12px;">Related videos</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:14px;">
+    <sc-for list="{{ videos }}" as="v" hint-placeholder-count="3">
+      <div style="background:#1c1c1c;border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;">
+        <sc-if value="{{ v.playing }}" hint-placeholder-val="{{ false }}">
+          <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;">
+            <iframe src="{{ v.embedSrc }}" style="position:absolute;inset:0;width:100%;height:100%;border:0;" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </sc-if>
+        <sc-if value="{{ v.stopped }}" hint-placeholder-val="{{ true }}">
+          <button data-idx="{{ $index }}" onClick="{{ playVideo }}" style="display:block;width:100%;border:none;padding:0;margin:0;cursor:pointer;background:none;text-align:left;">
+            <div style="position:relative;width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#26263200,#181820);overflow:hidden;display:flex;align-items:center;justify-content:center;">
+              <div style="position:absolute;inset:0;background:linear-gradient(135deg,#242430,#181820);"></div>
+              <div style="position:absolute;top:-34px;right:-4px;font-family:'JetBrains Mono',monospace;font-size:150px;line-height:1;font-weight:700;color:#81ADEC;opacity:.08;">77</div>
+              <div style="position:relative;width:52px;height:52px;border-radius:50%;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" width="20" height="20"><polygon points="7,4 20,12 7,20" fill="#fff"></polygon></svg></div>
+              <span style="position:absolute;bottom:8px;right:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#fff;background:rgba(0,0,0,.6);padding:2px 6px;border-radius:4px;">{{ v.dur }}</span>
+            </div>
+          </button>
+        </sc-if>
+        <div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;">
+          <div style="min-width:0;">
+            <div style="font-size:13px;font-weight:600;color:#EFEFE4;line-height:1.3;">{{ v.title }}</div>
+            <div style="font-size:11px;color:#8A8A85;margin-top:3px;">{{ v.channel }}</div>
+          </div>
+          <a href="{{ v.searchUrl }}" target="_blank" rel="noopener" style="font-size:11px;color:#8A8A85;white-space:nowrap;flex-shrink:0;">YouTube ↗</a>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;border-top:1px solid #222;padding-top:18px;margin-top:40px;font-size:12px;color:#8A8A85;">
+    <span>© basket atlas</span><span>Data: NBA.com · Basketball-Reference · 2025-26</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { aMode: 'pg', aSeason: 6, playIdx: null };
+
+  renderVals() {
+    const ACCENT = '#81ADEC', INK = '#EFEFE4', MUTED = '#8A8A85';
+    const f1 = (n) => n.toFixed(1);
+
+    const SEASONS = [
+      { season: '2019-20', team: 'Dallas Mavericks', league: 'NBA', gp: 61, min: 33.6, pts: 28.8, reb: 9.4, ast: 8.8, stl: 1.0, tov: 4.3, val: 44.2, fg2: 56.0, fg3: 31.6, ft: 75.8, ts: 58.5, usg: 36.8, per: 27.7 },
+      { season: '2020-21', team: 'Dallas Mavericks', league: 'NBA', gp: 66, min: 34.3, pts: 27.7, reb: 8.0, ast: 8.6, stl: 1.0, tov: 4.3, val: 41.3, fg2: 56.5, fg3: 35.0, ft: 73.0, ts: 58.4, usg: 35.9, per: 25.4 },
+      { season: '2021-22', team: 'Dallas Mavericks', league: 'NBA', gp: 65, min: 35.4, pts: 28.4, reb: 9.1, ast: 8.7, stl: 1.2, tov: 4.5, val: 43.4, fg2: 55.5, fg3: 35.3, ft: 74.4, ts: 57.6, usg: 37.4, per: 25.8 },
+      { season: '2022-23', team: 'Dallas Mavericks', league: 'NBA', gp: 66, min: 36.2, pts: 32.4, reb: 8.6, ast: 8.0, stl: 1.4, tov: 3.6, val: 47.4, fg2: 60.6, fg3: 34.2, ft: 74.2, ts: 60.7, usg: 37.6, per: 28.7 },
+      { season: '2023-24', team: 'Dallas Mavericks', league: 'NBA', gp: 70, min: 37.5, pts: 33.9, reb: 9.2, ast: 9.8, stl: 1.4, tov: 4.0, val: 50.7, fg2: 58.7, fg3: 38.2, ft: 78.6, ts: 61.2, usg: 36.0, per: 28.1 },
+      { season: '2024-25', team: 'Dallas / LA Lakers', league: 'NBA', gp: 50, min: 35.0, pts: 28.2, reb: 8.2, ast: 7.7, stl: 1.7, tov: 3.4, val: 43.6, fg2: 55.0, fg3: 36.8, ft: 78.4, ts: 58.9, usg: 34.0, per: 25.8 },
+      { season: '2025-26', team: 'LA Lakers',       league: 'NBA', gp: 64, min: 37.5, pts: 33.5, reb: 8.6, ast: 8.3, stl: 1.6, tov: 3.6, val: 48.9, fg2: 54.0, fg3: 35.5, ft: 78.0, ts: 58.5, usg: 34.5, per: 27.0 },
+    ];
+    const TRANSFERS = [
+      { year: '2015', fromTeam: 'Real Madrid (youth)', fromLeague: 'ACB', toTeam: 'Real Madrid', toLeague: 'ACB', cross: false },
+      { year: '2018', fromTeam: 'Real Madrid',      fromLeague: 'ACB', toTeam: 'Dallas Mavericks', toLeague: 'NBA', cross: true },
+      { year: '2025', fromTeam: 'Dallas Mavericks', fromLeague: 'NBA', toTeam: 'LA Lakers',        toLeague: 'NBA', cross: false },
+    ];
+
+    const chip = (a) => a ? { bg: ACCENT, color: '#101010', bd: ACCENT } : { bg: 'transparent', color: MUTED, bd: '#333' };
+    const pill = (a) => a ? { bg: '#242424', color: INK, bd: '#3a3a3a' } : { bg: 'transparent', color: MUTED, bd: '#2b2b2b' };
+
+    const sA = SEASONS[this.state.aSeason];
+    const aStatCells = this.state.aMode === 'pg'
+      ? [ { label: 'GP', value: String(sA.gp) }, { label: 'MIN', value: f1(sA.min) }, { label: 'PTS', value: f1(sA.pts) }, { label: 'REB', value: f1(sA.reb) }, { label: 'AST', value: f1(sA.ast) }, { label: 'STL', value: f1(sA.stl) }, { label: 'TOV', value: f1(sA.tov) }, { label: 'EFF', value: f1(sA.val) } ]
+      : [ { label: '2P%', value: f1(sA.fg2) + '%' }, { label: '3P%', value: f1(sA.fg3) + '%' }, { label: 'FT%', value: f1(sA.ft) + '%' }, { label: 'TS%', value: f1(sA.ts) + '%' }, { label: 'USG%', value: f1(sA.usg) + '%' }, { label: 'PER', value: f1(sA.per) }, { label: 'MIN', value: f1(sA.min) }, { label: 'EFF', value: f1(sA.val) } ];
+    const aModeTabs = [ { label: 'Per game', mode: 'pg', ...pill(this.state.aMode === 'pg') }, { label: 'Shooting', mode: 'sh', ...pill(this.state.aMode === 'sh') } ];
+    const aSeasonChips = SEASONS.map((s, i) => ({ label: s.season, ...chip(i === this.state.aSeason) }));
+    const maxPts = Math.max(...SEASONS.map((s) => s.pts));
+    const aBars = SEASONS.map((s, i) => {
+      const active = i === this.state.aSeason;
+      return { season: "'" + s.season.slice(2, 4), valTop: f1(s.pts), h: Math.round((s.pts / maxPts) * 110) + 'px', bg: active ? ACCENT : '#3a3a3a', labColor: active ? ACCENT : MUTED };
+    });
+    const transfers = TRANSFERS.slice().reverse().map((t) => ({ ...t, arrowColor: t.cross ? ACCENT : MUTED, toLeagueColor: t.cross ? ACCENT : MUTED, crossColor: t.cross ? ACCENT : 'transparent', tag: t.cross ? 'CROSS' : '' }));
+    const VID = [
+      { title: 'Every bucket — 33.5 PPG season', channel: 'NBA', dur: '10:24', q: 'Luka Doncic 2025-26 highlights Lakers' },
+      { title: 'Full highlights vs Golden State', channel: 'Los Angeles Lakers', dur: '8:12', q: 'Luka Doncic Lakers Warriors highlights 2026' },
+      { title: 'Top 10 plays of the season', channel: 'Basket Atlas', dur: '5:47', q: 'Luka Doncic top 10 plays 2026' },
+    ];
+    const videos = VID.map((v, i) => ({
+      ...v,
+      playing: this.state.playIdx === i,
+      stopped: this.state.playIdx !== i,
+      searchUrl: 'https://www.youtube.com/results?search_query=' + encodeURIComponent(v.q),
+      embedSrc: 'https://www.youtube.com/embed?listType=search&list=' + encodeURIComponent(v.q) + '&autoplay=1&rel=0',
+    }));
+
+    const num = (e) => Number(e.currentTarget.dataset.idx);
+    return {
+      playerName: 'Luka Dončić', playerNum: 77, playerPos: 'Guard',
+      playerCountry: 'Slovenia', playerHeight: '2.01 m', playerBorn: '28 Feb 1999',
+      playerAge: 27, playerTeam: 'LA Lakers', playerLeague: 'NBA', playerSince: 2025,
+      aStatCells, aModeTabs, aSeasonChips, aBars, aSeasonLabel: sA.season, transfers, videos,
+      setModeA: (e) => this.setState({ aMode: e.currentTarget.dataset.mode }),
+      selectSeasonA: (e) => this.setState({ aSeason: num(e) }),
+      playVideo: (e) => this.setState({ playIdx: Number(e.currentTarget.dataset.idx) }),
+    };
+  }
+}
+</script>
+</body>
+</html>

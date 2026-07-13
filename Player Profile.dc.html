@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics="">
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;background:#0d0d0d;font-family:'Inter',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;}
+  a{color:#81ADEC;text-decoration:none;}
+  a:hover{opacity:.85;}
+</style>
+</helmet>
+
+<section style="padding:44px 48px 40px;">
+  <div style="display:flex;align-items:baseline;gap:10px;margin:0 0 26px;">
+    <a href="#t1" style="font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#EFEFE4;color:#101010;border-radius:4px;">1</a>
+    <span style="font:600 13px system-ui;color:#EFEFE4;">Player profile — three directions on the Basket Atlas system</span>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;">
+
+    <!-- ============ OPTION 1a ============ -->
+    <div id="1a" style="scroll-margin-top:16px;display:flex;flex-direction:column;gap:11px;">
+      <div style="display:flex;align-items:baseline;gap:9px;">
+        <a href="#1a" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(255,255,255,.1);color:#EFEFE4;border-radius:5px;">1a</a>
+        <span style="font:400 11.5px system-ui;color:#8A8A85;">Reference — faithful &amp; refined · season selector + stat modes</span>
+      </div>
+      <div style="width:840px;max-width:100%;background:#181818;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;box-shadow:0 24px 70px -34px rgba(0,0,0,.85);">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 26px;border-bottom:1px solid #222;">
+          <div style="display:flex;align-items:center;color:#EFEFE4;"><svg viewBox="0 0 660 200" style="height: 51px; width: 168px; display: block" role="img" aria-label="Basket Atlas"><g fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round"><circle cx="70" cy="100" r="52"></circle><path d="M18,100 H122"></path><path d="M70,48 A26,52 0 0 1 70,152"></path><path d="M70,48 A26,52 0 0 0 70,152"></path></g><text x="158" y="126" font-family="Inter, Helvetica, Arial, sans-serif" font-weight="700" font-size="72" letter-spacing="-1" fill="currentColor">Basket Atlas</text></svg></div>
+          <div style="display:flex;gap:20px;align-items:center;">
+            <span style="font-size:13px;font-weight:600;color:#EFEFE4;">Players</span>
+            <span style="font-size:13px;font-weight:500;color:#8A8A85;">Leagues</span>
+            <span style="font-size:13px;font-weight:500;color:#8A8A85;">Transfers</span>
+            <span style="font-size:12px;font-weight:600;color:#8A8A85;border:1px solid #333;border-radius:7px;padding:6px 10px;">EN</span>
+          </div>
+        </div>
+
+        <div style="padding:26px;">
+          <!-- hero -->
+          <div style="position:relative;background:#1c1c1c;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:28px;overflow:hidden;">
+            <div style="position:absolute;top:-34px;right:6px;font-size:180px;line-height:1;font-weight:700;color:#fff;opacity:.05;font-family:'JetBrains Mono',monospace;">{{ playerNum }}</div>
+            <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;position:relative;">
+              <div style="flex:1;">
+                <div style="font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#81ADEC;font-weight:600;margin-bottom:9px;">{{ playerTeam }} · {{ playerLeague }}</div>
+                <div style="font-size:32px;font-weight:700;letter-spacing:-.02em;color:#EFEFE4;">{{ playerName }}</div>
+                <div style="font-size:14px;color:#B0AD9F;margin-top:5px;">{{ playerPos }} · {{ playerCountry }} · {{ playerHeight }}</div>
+                <div style="display:flex;gap:34px;margin-top:24px;flex-wrap:wrap;">
+                  <div><div style="font-size:11px;color:#8A8A85;margin-bottom:3px;">Born</div><div style="font-size:14px;color:#EFEFE4;font-family:'JetBrains Mono',monospace;">{{ playerBorn }}</div></div>
+                  <div><div style="font-size:11px;color:#8A8A85;margin-bottom:3px;">Age</div><div style="font-size:14px;color:#EFEFE4;font-family:'JetBrains Mono',monospace;">{{ playerAge }}</div></div>
+                  <div><div style="font-size:11px;color:#8A8A85;margin-bottom:3px;">Nationality</div><div style="font-size:14px;color:#EFEFE4;">{{ playerCountry }}</div></div>
+                  <div><div style="font-size:11px;color:#8A8A85;margin-bottom:3px;">At club since</div><div style="font-size:14px;color:#EFEFE4;font-family:'JetBrains Mono',monospace;">{{ playerSince }}</div></div>
+                </div>
+              </div>
+              <div style="width:132px;height:172px;flex-shrink:0;border-radius:10px;overflow:hidden;">
+                <svg viewBox="0 0 200 260" width="100%" height="100%"><rect width="200" height="260" fill="#232323"></rect><circle cx="100" cy="72" r="30" fill="#4a4a48"></circle><path d="M60 260 L60 190 Q60 140 100 135 Q140 140 140 190 L140 260 Z" fill="#4a4a48"></path></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- season + mode controls -->
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;margin:28px 0 14px;flex-wrap:wrap;">
+            <div style="font-size:12px;font-weight:600;color:#8A8A85;">Season · {{ aSeasonLabel }}</div>
+            <div style="display:flex;gap:8px;">
+              <sc-for list="{{ aModeTabs }}" as="t" hint-placeholder-count="2">
+                <button data-mode="{{ t.mode }}" onClick="{{ setModeA }}" style="font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;padding:7px 14px;border-radius:8px;background:{{ t.bg }};color:{{ t.color }};border:1px solid {{ t.bd }};">{{ t.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;margin-bottom:20px;">
+            <sc-for list="{{ aSeasonChips }}" as="c" hint-placeholder-count="7">
+              <button data-idx="{{ $index }}" onClick="{{ selectSeasonA }}" style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;white-space:nowrap;cursor:pointer;padding:7px 13px;border-radius:20px;background:{{ c.bg }};color:{{ c.color }};border:1px solid {{ c.bd }};">{{ c.label }}</button>
+            </sc-for>
+          </div>
+
+          <!-- stat grid -->
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:11px;">
+            <sc-for list="{{ aStatCells }}" as="c" hint-placeholder-count="8">
+              <div style="background:#1c1c1c;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:15px 15px;">
+                <div style="font-size:11px;color:#8A8A85;letter-spacing:.03em;text-transform:uppercase;margin-bottom:7px;">{{ c.label }}</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;color:#EFEFE4;">{{ c.value }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <!-- chart -->
+          <div style="font-size:12px;font-weight:600;color:#8A8A85;margin:34px 0 14px;">Points per game by season</div>
+          <div style="background:#1c1c1c;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:22px 20px 16px;">
+            <div style="display:flex;align-items:flex-end;gap:14px;height:130px;">
+              <sc-for list="{{ aBars }}" as="b" hint-placeholder-count="7">
+                <div data-idx="{{ $index }}" onClick="{{ selectSeasonA }}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:8px;cursor:pointer;height:100%;">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:{{ b.labColor }};font-weight:600;">{{ b.valTop }}</div>
+                  <div style="width:100%;max-width:34px;height:{{ b.h }};background:{{ b.bg }};border-radius:5px 5px 0 0;"></div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#8A8A85;">{{ b.season }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- transfers -->
+          <div style="font-size:12px;font-weight:600;color:#8A8A85;margin:34px 0 6px;">Transfer history</div>
+          <sc-for list="{{ transfers }}" as="t" hint-placeholder-count="4">
+            <div style="display:grid;grid-template-columns:56px 1fr 24px 1fr 66px;align-items:center;gap:12px;padding:13px 10px;border-radius:10px;" style-hover="background:#1c1c1c;">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A8A85;">{{ t.year }}</div>
+              <div><div style="font-size:14px;font-weight:600;color:#EFEFE4;">{{ t.fromTeam }}</div><div style="font-size:11px;color:#8A8A85;margin-top:2px;">{{ t.fromLeague }}</div></div>
+              <div style="text-align:center;color:{{ t.arrowColor }};font-size:15px;">→</div>
+              <div><div style="font-size:14px;font-weight:600;color:#EFEFE4;">{{ t.toTeam }}</div><div style="font-size:11px;color:{{ t.toLeagueColor }};margin-top:2px;">{{ t.toLeague }}</div></div>
+              <div style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;color:{{ t.crossColor }};font-weight:600;">{{ t.tag }}</div>
+            </div>
+          </sc-for>
+
+          <div style="display:flex;justify-content:space-between;border-top:1px solid #222;padding-top:16px;margin-top:22px;font-size:12px;color:#8A8A85;">
+            <span>© basket atlas</span><span>Data: NBA.com · Basketball-Reference · 2025-26</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ OPTION 1b ============ -->
+    <div id="1b" style="scroll-margin-top:16px;display:flex;flex-direction:column;gap:11px;">
+      <div style="display:flex;align-items:baseline;gap:9px;">
+        <a href="#1b" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(255,255,255,.1);color:#EFEFE4;border-radius:5px;">1b</a>
+        <span style="font:400 11.5px system-ui;color:#8A8A85;">Analyst dashboard — sticky rail, tabbed panels, percentiles vs league</span>
+      </div>
+      <div style="width:900px;max-width:100%;background:#181818;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;box-shadow:0 24px 70px -34px rgba(0,0,0,.85);">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 26px;border-bottom:1px solid #222;">
+          <div style="display:flex;align-items:center;color:#EFEFE4;"><svg viewBox="0 0 660 200" style="height:30px;width:auto;display:block;"><g fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round"><circle cx="70" cy="100" r="52"></circle><path d="M18,100 H122"></path><path d="M70,48 A26,52 0 0 1 70,152"></path><path d="M70,48 A26,52 0 0 0 70,152"></path></g><text x="158" y="126" font-family="Inter, Helvetica, Arial, sans-serif" font-weight="700" font-size="72" letter-spacing="-1" fill="currentColor">Basket Atlas</text></svg></div>
+          <div style="display:flex;gap:20px;align-items:center;">
+            <span style="font-size:13px;font-weight:600;color:#EFEFE4;">Players</span>
+            <span style="font-size:13px;font-weight:500;color:#8A8A85;">Leagues</span>
+            <span style="font-size:13px;font-weight:500;color:#8A8A85;">Transfers</span>
+            <span style="font-size:12px;font-weight:600;color:#8A8A85;border:1px solid #333;border-radius:7px;padding:6px 10px;">EN</span>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:stretch;">
+          <!-- left rail -->
+          <div style="width:266px;flex-shrink:0;border-right:1px solid #222;padding:26px 22px;">
+            <div style="width:100%;aspect-ratio:4/5;border-radius:12px;overflow:hidden;margin-bottom:18px;">
+              <svg viewBox="0 0 200 260" width="100%" height="100%"><rect width="200" height="260" fill="#232323"></rect><circle cx="100" cy="72" r="30" fill="#4a4a48"></circle><path d="M60 260 L60 190 Q60 140 100 135 Q140 140 140 190 L140 260 Z" fill="#4a4a48"></path></svg>
+            </div>
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;">
+              <div style="width:34px;height:34px;border-radius:8px;background:#242424;color:#EFEFE4;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;">{{ playerNum }}</div>
+              <div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#81ADEC;font-weight:600;">{{ playerPosShort }} · {{ playerLeague }}</div>
+            </div>
+            <div style="font-size:23px;font-weight:700;letter-spacing:-.02em;color:#EFEFE4;line-height:1.1;">{{ playerName }}</div>
+            <div style="font-size:13px;color:#8A8A85;margin-top:4px;">{{ playerTeam }}</div>
+            <div style="border-top:1px solid #222;margin:20px 0;"></div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div style="display:flex;justify-content:space-between;"><span style="font-size:12px;color:#8A8A85;">Country</span><span style="font-size:12px;color:#EFEFE4;">{{ playerCountry }}</span></div>
+              <div style="display:flex;justify-content:space-between;"><span style="font-size:12px;color:#8A8A85;">Height</span><span style="font-size:12px;color:#EFEFE4;font-family:'JetBrains Mono',monospace;">{{ playerHeight }}</span></div>
+              <div style="display:flex;justify-content:space-between;"><span style="font-size:12px;color:#8A8A85;">Born</span><span style="font-size:12px;color:#EFEFE4;font-family:'JetBrains Mono',monospace;">{{ playerBorn }}</span></div>
+              <div style="display:flex;justify-content:space-between;"><span style="font-size:12px;color:#8A8A85;">Age</span><span style="font-size:12px;color:#EFEFE4;font-family:'JetBrains Mono',monospace;">{{ playerAge }}</span></div>
+            </div>
+            <div style="border-top:1px solid #222;margin:20px 0 16px;"></div>
+            <div style="font-size:11px;color:#8A8A85;margin-bottom:9px;">Season</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+              <sc-for list="{{ bSeasonChips }}" as="c" hint-placeholder-count="7">
+                <button data-idx="{{ $index }}" onClick="{{ selectSeasonB }}" style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;cursor:pointer;padding:5px 9px;border-radius:14px;background:{{ c.bg }};color:{{ c.color }};border:1px solid {{ c.bd }};">{{ c.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- right content -->
+          <div style="flex:1;min-width:0;padding:22px 26px 26px;">
+            <div style="display:flex;gap:22px;border-bottom:1px solid #222;margin-bottom:22px;">
+              <sc-for list="{{ bTabs }}" as="t" hint-placeholder-count="4">
+                <button data-tab="{{ t.tab }}" onClick="{{ setTabB }}" style="font-family:inherit;font-size:13px;font-weight:600;background:none;cursor:pointer;padding:0 0 12px;border:none;border-bottom:2px solid {{ t.bd }};color:{{ t.color }};">{{ t.label }}</button>
+              </sc-for>
+            </div>
+
+            <!-- OVERVIEW -->
+            <sc-if value="{{ bShowOverview }}" hint-placeholder-val="{{ true }}">
+              <div>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:26px;">
+                  <sc-for list="{{ bKpis }}" as="k" hint-placeholder-count="4">
+                    <div style="background:#1c1c1c;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:15px;">
+                      <div style="font-size:11px;color:#8A8A85;text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px;">{{ k.label }}</div>
+                      <div style="font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:#EFEFE4;">{{ k.value }}</div>
+                      <div style="font-size:10px;color:#8A8A85;margin-top:4px;">{{ k.unit }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="font-size:12px;font-weight:600;color:#8A8A85;margin-bottom:16px;">Percentile vs league average</div>
+                <div style="display:flex;flex-direction:column;gap:15px;">
+                  <sc-for list="{{ bPct }}" as="p" hint-placeholder-count="6">
+                    <div style="display:grid;grid-template-columns:88px 1fr 96px;align-items:center;gap:14px;">
+                      <span style="font-size:13px;color:#EFEFE4;font-weight:500;">{{ p.label }}</span>
+                      <div style="height:8px;background:#242424;border-radius:5px;overflow:hidden;">
+                        <div style="height:100%;width:{{ p.barW }};background:{{ p.barColor }};border-radius:5px;"></div>
+                      </div>
+                      <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A8A85;text-align:right;">{{ p.val }} · avg {{ p.avg }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+
+            <!-- SPLITS -->
+            <sc-if value="{{ bShowSplits }}" hint-placeholder-val="{{ true }}">
+              <div>
+                <div style="display:grid;grid-template-columns:1fr 68px 68px 68px 68px;font-size:11px;color:#8A8A85;padding:0 8px 10px;border-bottom:1px solid #222;">
+                  <span>Season</span><span style="text-align:right;">2P%</span><span style="text-align:right;">3P%</span><span style="text-align:right;">FT%</span><span style="text-align:right;">TS%</span>
+                </div>
+                <sc-for list="{{ bSplitRows }}" as="r" hint-placeholder-count="7">
+                  <div style="display:grid;grid-template-columns:1fr 68px 68px 68px 68px;align-items:center;padding:12px 8px;border-bottom:1px solid #222;background:{{ r.rowBg }};border-radius:6px;">
+                    <span style="font-size:13px;color:{{ r.nameColor }};font-weight:{{ r.weight }};">{{ r.season }} · {{ r.league }}</span>
+                    <span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:13px;color:#EFEFE4;">{{ r.fg2 }}</span>
+                    <span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:13px;color:#EFEFE4;">{{ r.fg3 }}</span>
+                    <span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:13px;color:#EFEFE4;">{{ r.ft }}</span>
+                    <span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:13px;color:#81ADEC;font-weight:600;">{{ r.ts }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <!-- CAREER -->
+            <sc-if value="{{ bShowCareer }}" hint-placeholder-val="{{ true }}">
+              <div>
+                <div style="display:grid;grid-template-columns:1fr 42px 54px 54px 54px 54px;font-size:11px;color:#8A8A85;padding:0 8px 10px;border-bottom:1px solid #222;">
+                  <span>Season · Team</span><span style="text-align:right;">GP</span><span style="text-align:right;">PTS</span><span style="text-align:right;">REB</span><span style="text-align:right;">AST</span><span style="text-align:right;">EFF</span>
+                </div>
+                <sc-for list="{{ bCareerRows }}" as="r" hint-placeholder-count="7">
+                  <div data-idx="{{ r.idx }}" onClick="{{ selectSeasonB }}" style="display:grid;grid-template-columns:1fr 42px 54px 54px 54px 54px;align-items:center;padding:12px 8px;border-bottom:1px solid #222;background:{{ r.rowBg }};border-radius:6px;cursor:pointer;">
+                    <div><div style="font-size:13px;color:{{ r.nameColor }};font-weight:{{ r.weight }};">{{ r.team }}</div><div style="font-size:10px;color:#8A8A85;margin-top:2px;font-family:'JetBrains Mono',monospace;">{{ r.season }} · {{ r.league }}</div></div>
+                    <span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:13px;color:#8A8A85;">{{ r.gp }}</span>
+                    <span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:13px;color:#EFEFE4;">{{ r.pts }}</span>
+                    <span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:13px;color:#EFEFE4;">{{ r.reb }}</span>
+                    <span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:13px;color:#EFEFE4;">{{ r.ast }}</span>
+                    <span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:13px;color:#81ADEC;font-weight:600;">{{ r.val }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <!-- TRANSFERS -->
+            <sc-if value="{{ bShowTransfers }}" hint-placeholder-val="{{ true }}">
+              <div>
+                <sc-for list="{{ transfers }}" as="t" hint-placeholder-count="4">
+                  <div style="display:grid;grid-template-columns:56px 1fr 24px 1fr 66px;align-items:center;gap:12px;padding:14px 8px;border-bottom:1px solid #222;">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A8A85;">{{ t.year }}</div>
+                    <div><div style="font-size:14px;font-weight:600;color:#EFEFE4;">{{ t.fromTeam }}</div><div style="font-size:11px;color:#8A8A85;margin-top:2px;">{{ t.fromLeague }}</div></div>
+                    <div style="text-align:center;color:{{ t.arrowColor }};font-size:15px;">→</div>
+                    <div><div style="font-size:14px;font-weight:600;color:#EFEFE4;">{{ t.toTeam }}</div><div style="font-size:11px;color:{{ t.toLeagueColor }};margin-top:2px;">{{ t.toLeague }}</div></div>
+                    <div style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;color:{{ t.crossColor }};font-weight:600;">{{ t.tag }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ OPTION 1c ============ -->
+    <div id="1c" style="scroll-margin-top:16px;display:flex;flex-direction:column;gap:11px;">
+      <div style="display:flex;align-items:baseline;gap:9px;">
+        <a href="#1c" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(255,255,255,.1);color:#EFEFE4;border-radius:5px;">1c</a>
+        <span style="font:400 11.5px system-ui;color:#8A8A85;">Editorial — oversized type, career journey timeline</span>
+      </div>
+      <div style="width:860px;max-width:100%;background:#181818;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;box-shadow:0 24px 70px -34px rgba(0,0,0,.85);">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 30px;border-bottom:1px solid #222;">
+          <div style="display:flex;align-items:center;color:#EFEFE4;"><svg viewBox="0 0 660 200" style="height:30px;width:auto;display:block;"><g fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round"><circle cx="70" cy="100" r="52"></circle><path d="M18,100 H122"></path><path d="M70,48 A26,52 0 0 1 70,152"></path><path d="M70,48 A26,52 0 0 0 70,152"></path></g><text x="158" y="126" font-family="Inter, Helvetica, Arial, sans-serif" font-weight="700" font-size="72" letter-spacing="-1" fill="currentColor">Basket Atlas</text></svg></div>
+          <div style="display:flex;gap:20px;align-items:center;">
+            <span style="font-size:13px;font-weight:600;color:#EFEFE4;">Players</span>
+            <span style="font-size:13px;font-weight:500;color:#8A8A85;">Leagues</span>
+            <span style="font-size:13px;font-weight:500;color:#8A8A85;">Transfers</span>
+            <span style="font-size:12px;font-weight:600;color:#8A8A85;border:1px solid #333;border-radius:7px;padding:6px 10px;">EN</span>
+          </div>
+        </div>
+
+        <!-- editorial hero -->
+        <div style="position:relative;padding:40px 30px 34px;overflow:hidden;">
+          <div style="position:absolute;top:-70px;left:-10px;font-family:'JetBrains Mono',monospace;font-size:340px;line-height:1;font-weight:700;color:#81ADEC;opacity:.09;">{{ playerNum }}</div>
+          <div style="position:relative;">
+            <div style="font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#81ADEC;font-weight:600;">{{ playerLeague }} · {{ playerTeam }} · #{{ playerNum }}</div>
+            <div style="font-size:76px;line-height:.92;font-weight:700;letter-spacing:-.03em;color:#EFEFE4;margin:14px 0 0;">{{ playerFirst }}<br>{{ playerLast }}</div>
+            <div style="font-size:16px;color:#B0AD9F;margin-top:18px;">{{ playerPos }} · {{ playerCountry }} · {{ playerHeight }} · Age {{ playerAge }}</div>
+          </div>
+        </div>
+
+        <!-- giant current stats -->
+        <div style="padding:0 30px;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px;">
+            <div style="font-size:13px;font-weight:600;color:#8A8A85;">Selected season</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#EFEFE4;font-weight:600;">{{ cSeasonLabel }} · {{ cTeamLeague }}</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#242424;border:1px solid #242424;border-radius:14px;overflow:hidden;">
+            <sc-for list="{{ cBig }}" as="s" hint-placeholder-count="3">
+              <div style="background:#181818;padding:26px 22px;">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:56px;line-height:1;font-weight:700;color:#EFEFE4;">{{ s.value }}</div>
+                <div style="font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#81ADEC;font-weight:600;margin-top:12px;">{{ s.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- career journey timeline -->
+        <div style="padding:38px 30px 8px;">
+          <div style="font-size:13px;font-weight:600;color:#8A8A85;margin-bottom:22px;">Career journey — click a stop to change the season</div>
+          <div style="display:flex;gap:0;overflow-x:auto;padding-bottom:8px;">
+            <sc-for list="{{ cNodes }}" as="n" hint-placeholder-count="7">
+              <div data-idx="{{ $index }}" onClick="{{ selectSeasonC }}" style="flex:1;min-width:112px;cursor:pointer;position:relative;padding-top:26px;">
+                <div style="position:absolute;top:6px;left:0;right:0;height:2px;background:#2a2a2a;"></div>
+                <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:14px;height:14px;border-radius:50%;background:{{ n.dot }};border:3px solid #181818;"></div>
+                <div style="text-align:center;padding:0 6px;">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:{{ n.yearColor }};font-weight:600;">{{ n.year }}</div>
+                  <div style="font-size:12px;color:{{ n.color }};font-weight:{{ n.weight }};margin-top:6px;line-height:1.3;">{{ n.team }}</div>
+                  <div style="font-size:10px;color:#8A8A85;margin-top:3px;font-family:'JetBrains Mono',monospace;">{{ n.league }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- career highs strip -->
+        <div style="padding:30px;">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:11px;">
+            <sc-for list="{{ cHighs }}" as="h" hint-placeholder-count="4">
+              <div style="border:1px solid #242424;border-radius:10px;padding:16px;">
+                <div style="font-size:11px;color:#8A8A85;text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px;">{{ h.label }}</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:#EFEFE4;">{{ h.value }}</div>
+                <div style="font-size:10px;color:#8A8A85;margin-top:5px;">{{ h.season }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;justify-content:space-between;border-top:1px solid #222;padding-top:16px;margin-top:26px;font-size:12px;color:#8A8A85;">
+            <span>© basket atlas</span><span>Data: NBA.com · Basketball-Reference · 2025-26</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <p style="margin:30px 0 0;font:13px/1.6 system-ui;color:#8A8A85;max-width:760px;">
+    Try next: "build out <a href="#1b">1b</a> as the main profile page" · "give <a href="#1a">1a</a> a light-theme toggle" · "add a player comparison view" · "turn the career journey from <a href="#1c">1c</a> into a shared component" · "new directions"
+  </p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { aMode: 'pg', aSeason: 6, bTab: 'overview', bSeason: 6, cSeason: 6 };
+
+  renderVals() {
+    const ACCENT = '#81ADEC', INK = '#EFEFE4', MUTED = '#8A8A85';
+    const f1 = (n) => n.toFixed(1);
+
+    const SEASONS = [
+      { season: '2019-20', team: 'Dallas Mavericks', league: 'NBA', gp: 61, min: 33.6, pts: 28.8, reb: 9.4, ast: 8.8, stl: 1.0, tov: 4.3, val: 44.2, fg2: 56.0, fg3: 31.6, ft: 75.8, ts: 58.5, usg: 36.8, per: 27.7 },
+      { season: '2020-21', team: 'Dallas Mavericks', league: 'NBA', gp: 66, min: 34.3, pts: 27.7, reb: 8.0, ast: 8.6, stl: 1.0, tov: 4.3, val: 41.3, fg2: 56.5, fg3: 35.0, ft: 73.0, ts: 58.4, usg: 35.9, per: 25.4 },
+      { season: '2021-22', team: 'Dallas Mavericks', league: 'NBA', gp: 65, min: 35.4, pts: 28.4, reb: 9.1, ast: 8.7, stl: 1.2, tov: 4.5, val: 43.4, fg2: 55.5, fg3: 35.3, ft: 74.4, ts: 57.6, usg: 37.4, per: 25.8 },
+      { season: '2022-23', team: 'Dallas Mavericks', league: 'NBA', gp: 66, min: 36.2, pts: 32.4, reb: 8.6, ast: 8.0, stl: 1.4, tov: 3.6, val: 47.4, fg2: 60.6, fg3: 34.2, ft: 74.2, ts: 60.7, usg: 37.6, per: 28.7 },
+      { season: '2023-24', team: 'Dallas Mavericks', league: 'NBA', gp: 70, min: 37.5, pts: 33.9, reb: 9.2, ast: 9.8, stl: 1.4, tov: 4.0, val: 50.7, fg2: 58.7, fg3: 38.2, ft: 78.6, ts: 61.2, usg: 36.0, per: 28.1 },
+      { season: '2024-25', team: 'Dallas / LA Lakers', league: 'NBA', gp: 50, min: 35.0, pts: 28.2, reb: 8.2, ast: 7.7, stl: 1.7, tov: 3.4, val: 43.6, fg2: 55.0, fg3: 36.8, ft: 78.4, ts: 58.9, usg: 34.0, per: 25.8 },
+      { season: '2025-26', team: 'LA Lakers', league: 'NBA', gp: 64, min: 37.5, pts: 33.5, reb: 8.6, ast: 8.3, stl: 1.6, tov: 3.6, val: 48.9, fg2: 54.0, fg3: 35.5, ft: 78.0, ts: 58.5, usg: 34.5, per: 27.0 },
+    ];
+
+    const TRANSFERS = [
+      { year: '2015', fromTeam: 'Real Madrid (youth)', fromLeague: 'ACB', toTeam: 'Real Madrid', toLeague: 'ACB', cross: false },
+      { year: '2018', fromTeam: 'Real Madrid',      fromLeague: 'ACB', toTeam: 'Dallas Mavericks', toLeague: 'NBA', cross: true },
+      { year: '2025', fromTeam: 'Dallas Mavericks', fromLeague: 'NBA', toTeam: 'LA Lakers',        toLeague: 'NBA', cross: false },
+    ];
+
+    const chip = (active) => active
+      ? { bg: ACCENT, color: '#101010', bd: ACCENT }
+      : { bg: 'transparent', color: MUTED, bd: '#333' };
+    const pill = (active) => active
+      ? { bg: '#242424', color: INK, bd: '#3a3a3a' }
+      : { bg: 'transparent', color: MUTED, bd: '#2b2b2b' };
+
+    const meta = {
+      playerName: 'Luka Dončić', playerFirst: 'Luka', playerLast: 'Dončić',
+      playerNum: 77, playerPos: 'Guard', playerPosShort: 'PG',
+      playerCountry: 'Slovenia', playerHeight: '2.01 m', playerBorn: '28 Feb 1999',
+      playerAge: 27, playerTeam: 'LA Lakers', playerLeague: 'NBA', playerSince: 2025,
+    };
+
+    const transfers = TRANSFERS.slice().reverse().map((t) => ({
+      ...t,
+      arrowColor: t.cross ? ACCENT : MUTED,
+      toLeagueColor: t.cross ? ACCENT : MUTED,
+      crossColor: t.cross ? ACCENT : 'transparent',
+      tag: t.cross ? 'CROSS' : '',
+    }));
+
+    // ---------- Option A ----------
+    const sA = SEASONS[this.state.aSeason];
+    const aStatCells = this.state.aMode === 'pg'
+      ? [
+          { label: 'GP', value: String(sA.gp) }, { label: 'MIN', value: f1(sA.min) },
+          { label: 'PTS', value: f1(sA.pts) },   { label: 'REB', value: f1(sA.reb) },
+          { label: 'AST', value: f1(sA.ast) },   { label: 'STL', value: f1(sA.stl) },
+          { label: 'TOV', value: f1(sA.tov) },   { label: 'EFF', value: f1(sA.val) },
+        ]
+      : [
+          { label: '2P%', value: f1(sA.fg2) + '%' }, { label: '3P%', value: f1(sA.fg3) + '%' },
+          { label: 'FT%', value: f1(sA.ft) + '%' },  { label: 'TS%', value: f1(sA.ts) + '%' },
+          { label: 'USG%', value: f1(sA.usg) + '%' },{ label: 'PER', value: f1(sA.per) },
+          { label: 'MIN', value: f1(sA.min) },       { label: 'EFF', value: f1(sA.val) },
+        ];
+    const aModeTabs = [
+      { label: 'Per game', mode: 'pg', ...pill(this.state.aMode === 'pg') },
+      { label: 'Shooting', mode: 'sh', ...pill(this.state.aMode === 'sh') },
+    ];
+    const aSeasonChips = SEASONS.map((s, i) => ({ label: s.season, ...chip(i === this.state.aSeason) }));
+    const maxPts = Math.max(...SEASONS.map((s) => s.pts));
+    const aBars = SEASONS.map((s, i) => {
+      const active = i === this.state.aSeason;
+      return {
+        season: "'" + s.season.slice(2, 4),
+        valTop: f1(s.pts),
+        h: Math.round((s.pts / maxPts) * 92) + 'px',
+        bg: active ? ACCENT : '#3a3a3a',
+        labColor: active ? ACCENT : MUTED,
+      };
+    });
+
+    // ---------- Option B ----------
+    const sB = SEASONS[this.state.bSeason];
+    const bTabsDef = [
+      { label: 'Overview', tab: 'overview' },
+      { label: 'Shooting', tab: 'splits' },
+      { label: 'Career', tab: 'career' },
+      { label: 'Transfers', tab: 'transfers' },
+    ];
+    const bTabs = bTabsDef.map((t) => {
+      const active = this.state.bTab === t.tab;
+      return { ...t, color: active ? INK : MUTED, bd: active ? ACCENT : 'transparent' };
+    });
+    const bKpis = [
+      { label: 'Points', value: f1(sB.pts), unit: 'per game' },
+      { label: 'Assists', value: f1(sB.ast), unit: 'per game' },
+      { label: 'Rebounds', value: f1(sB.reb), unit: 'per game' },
+      { label: 'EFF', value: f1(sB.val), unit: 'rating' },
+    ];
+    const pctDef = [
+      { label: 'Points', val: f1(sB.pts), avg: '15.2', pct: 92 },
+      { label: 'Assists', val: f1(sB.ast), avg: '4.1', pct: 96 },
+      { label: 'Rebounds', val: f1(sB.reb), avg: '4.3', pct: 88 },
+      { label: '3P%', val: f1(sB.fg3) + '%', avg: '35.9%', pct: 60 },
+      { label: 'TS%', val: f1(sB.ts) + '%', avg: '57.0%', pct: 66 },
+      { label: 'EFF', val: f1(sB.val), avg: '17.0', pct: 98 },
+    ];
+    const bPct = pctDef.map((p) => ({
+      ...p, barW: p.pct + '%', barColor: p.pct >= 70 ? ACCENT : '#5a5a58',
+    }));
+    const bSplitRows = SEASONS.map((s, i) => {
+      const sel = i === this.state.bSeason;
+      return {
+        season: s.season, league: s.league,
+        fg2: f1(s.fg2) + '%', fg3: f1(s.fg3) + '%', ft: f1(s.ft) + '%', ts: f1(s.ts) + '%',
+        rowBg: sel ? 'rgba(129,173,236,.08)' : 'transparent',
+        nameColor: sel ? INK : MUTED, weight: sel ? 700 : 500,
+      };
+    }).reverse();
+    const bCareerRows = SEASONS.map((s, i) => {
+      const sel = i === this.state.bSeason;
+      return {
+        idx: i, season: s.season, team: s.team, league: s.league,
+        gp: String(s.gp), pts: f1(s.pts), reb: f1(s.reb), ast: f1(s.ast), val: f1(s.val),
+        rowBg: sel ? 'rgba(129,173,236,.08)' : 'transparent',
+        nameColor: sel ? INK : '#cfcfc8', weight: sel ? 700 : 600,
+      };
+    }).reverse();
+    const bSeasonChips = SEASONS.map((s, i) => ({ label: s.season, ...chip(i === this.state.bSeason) }));
+
+    // ---------- Option C ----------
+    const sC = SEASONS[this.state.cSeason];
+    const cBig = [
+      { label: 'Points', value: f1(sC.pts) },
+      { label: 'Assists', value: f1(sC.ast) },
+      { label: 'EFF', value: f1(sC.val) },
+    ];
+    const cNodes = SEASONS.map((s, i) => {
+      const active = i === this.state.cSeason;
+      return {
+        year: s.season.slice(0, 4), label: s.season, team: s.team, league: s.league,
+        dot: active ? ACCENT : '#3a3a3a',
+        color: active ? INK : MUTED,
+        yearColor: active ? ACCENT : MUTED,
+        weight: active ? 700 : 500,
+      };
+    });
+    const best = (key) => SEASONS.reduce((a, b) => (b[key] > a[key] ? b : a));
+    const bp = best('pts'), ba = best('ast'), bv = best('val'), b3 = best('fg3');
+    const cHighs = [
+      { label: 'Career-high PTS', value: f1(bp.pts), season: bp.season },
+      { label: 'Career-high AST', value: f1(ba.ast), season: ba.season },
+      { label: 'Career-high EFF', value: f1(bv.val), season: bv.season },
+      { label: 'Best 3P%', value: f1(b3.fg3) + '%', season: b3.season },
+    ];
+
+    const num = (e) => Number(e.currentTarget.dataset.idx);
+    return {
+      ...meta, transfers,
+      aStatCells, aModeTabs, aSeasonChips, aBars, aSeasonLabel: sA.season,
+      bTabs, bKpis, bPct, bSplitRows, bCareerRows, bSeasonChips,
+      bShowOverview: this.state.bTab === 'overview',
+      bShowSplits: this.state.bTab === 'splits',
+      bShowCareer: this.state.bTab === 'career',
+      bShowTransfers: this.state.bTab === 'transfers',
+      cBig, cNodes, cHighs, cSeasonLabel: sC.season, cTeamLeague: sC.team + ' · ' + sC.league,
+      setModeA: (e) => this.setState({ aMode: e.currentTarget.dataset.mode }),
+      selectSeasonA: (e) => this.setState({ aSeason: num(e) }),
+      setTabB: (e) => this.setState({ bTab: e.currentTarget.dataset.tab }),
+      selectSeasonB: (e) => this.setState({ bSeason: num(e) }),
+      selectSeasonC: (e) => this.setState({ cSeason: num(e) }),
+    };
+  }
+}
+</script>
+</body>
+</html>

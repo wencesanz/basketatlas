@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;background:#181818;color:#EFEFE4;font-family:'Inter',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;}
+  a{color:#EFEFE4;text-decoration:none;}
+  input::placeholder{color:#6f6f6a;}
+</style>
+<script src="./nba-config.js"></script>
+<script src="./nba-api.js"></script>
+</helmet>
+
+<div style="max-width:1080px;margin:0 auto;padding:0 24px 40px;">
+
+  <header style="display:flex;justify-content:space-between;align-items:center;padding:22px 0;">
+    <a href="Home.dc.html" style="display:flex;align-items:center;color:#EFEFE4;"><svg viewBox="0 0 660 200" style="height:34px;width:auto;display:block;" role="img" aria-label="Basket Atlas"><g fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round"><circle cx="70" cy="100" r="52"></circle><path d="M18,100 H122"></path><path d="M70,48 A26,52 0 0 1 70,152"></path><path d="M70,48 A26,52 0 0 0 70,152"></path></g><text x="158" y="126" font-family="Inter, Helvetica, Arial, sans-serif" font-weight="700" font-size="72" letter-spacing="-1" fill="currentColor">Basket Atlas</text></svg></a>
+    <nav style="display:flex;gap:24px;align-items:center;">
+      <a href="Players.dc.html" style="font-size:14px;font-weight:600;color:#EFEFE4;">Players</a>
+      <a href="League.dc.html" style="font-size:14px;font-weight:500;color:#8A8A85;">Leagues</a>
+      <a href="Transfers.dc.html" style="font-size:14px;font-weight:500;color:#8A8A85;">Transfers</a>
+      <a href="News.dc.html" style="font-size:14px;font-weight:500;color:#8A8A85;">News</a>
+      <span style="font-size:12px;font-weight:600;color:#8A8A85;border:1px solid #333;border-radius:7px;padding:6px 10px;">EN</span>
+    </nav>
+  </header>
+
+  <!-- LIVE DATA -->
+  <div style="background:#1c1c1c;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 18px;margin:14px 0 0;">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#EFEFE4;"><span style="width:8px;height:8px;border-radius:50%;background:{{ liveDot }};box-shadow:0 0 0 3px {{ liveDotHalo }};"></span>Live data</span>
+        <span style="font-size:12px;color:#8A8A85;">balldontlie · season averages</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:.04em;color:{{ liveDot }};">{{ liveStatusText }}</span>
+        <sc-if value="{{ liveConnected }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ refreshLive }}" style="font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;background:none;border:1px solid #333;border-radius:7px;padding:6px 11px;color:#EFEFE4;" style-hover="border-color:#81ADEC;">Refresh</button>
+          <sc-if value="{{ showDisconnect }}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{ disconnectLive }}" style="font-family:inherit;font-size:12px;font-weight:500;cursor:pointer;background:none;border:none;color:#8A8A85;" style-hover="color:#EFEFE4;">Disconnect</button>
+          </sc-if>
+        </sc-if>
+      </div>
+    </div>
+    <sc-if value="{{ liveNeedsKey }}" hint-placeholder-val="{{ true }}">
+      <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+        <input value="{{ liveKeyInput }}" onInput="{{ onKeyInput }}" placeholder="Paste your free balldontlie API key" style="flex:1;min-width:240px;background:#242424;border:1px solid #333;border-radius:8px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:13px;color:#EFEFE4;outline:none;" style-focus="border-color:#81ADEC;">
+        <button onClick="{{ connectLive }}" style="font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;background:#81ADEC;border:none;border-radius:8px;padding:10px 18px;color:#101010;">Connect</button>
+        <a href="https://app.balldontlie.io" target="_blank" rel="noopener" style="font-size:12px;color:#81ADEC;white-space:nowrap;">Get a free key ↗</a>
+      </div>
+      <div style="font-size:11px;color:#8A8A85;margin-top:9px;">Not connected — cards show verified 2025-26 averages. Connect to pull them live.</div>
+    </sc-if>
+    <sc-if value="{{ liveOn }}" hint-placeholder-val="{{ false }}">
+      <div style="font-size:11px;color:#8A8A85;margin-top:10px;">Cards below are <span style="color:#3FB950;font-weight:600;">live season averages</span> · {{ liveCount }} players · updated {{ liveUpdated }}</div>
+    </sc-if>
+    <sc-if value="{{ liveError }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:12px;font-size:12px;color:#E6A03C;">{{ liveErrorMsg }} · <button onClick="{{ refreshLive }}" style="font-family:inherit;font-size:12px;background:none;border:none;color:#81ADEC;cursor:pointer;padding:0;text-decoration:underline;">retry</button></div>
+    </sc-if>
+  </div>
+
+  <div style="padding:22px 0 4px;">
+    <div style="font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#81ADEC;font-weight:600;">Player search</div>
+    <h1 style="font-size:30px;font-weight:700;letter-spacing:-.015em;margin:8px 0 0;">Find any player</h1>
+  </div>
+
+  <!-- search box -->
+  <div style="position:relative;margin-top:20px;">
+    <div style="position:absolute;left:18px;top:50%;transform:translateY(-50%);color:#8A8A85;display:flex;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg></div>
+    <input value="{{ q }}" onInput="{{ onSearch }}" placeholder="Search by name, team or country…" style="width:100%;background:#1c1c1c;border:1px solid #333;border-radius:12px;padding:16px 16px 16px 50px;font-family:inherit;font-size:16px;color:#EFEFE4;outline:none;" style-focus="border-color:#81ADEC;">
+  </div>
+
+  <!-- filters -->
+  <div style="display:flex;flex-wrap:wrap;gap:22px;margin-top:22px;">
+    <div>
+      <div style="font-size:11px;color:#8A8A85;margin-bottom:8px;">Position</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;">
+        <sc-for list="{{ posChips }}" as="c" hint-placeholder-count="4">
+          <button data-pos="{{ c.key }}" onClick="{{ selectPos }}" style="font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;padding:7px 14px;border-radius:18px;background:{{ c.bg }};color:{{ c.color }};border:1px solid {{ c.bd }};">{{ c.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:11px;color:#8A8A85;margin-bottom:8px;">Conference</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;">
+        <sc-for list="{{ leagueChips }}" as="c" hint-placeholder-count="6">
+          <button data-league="{{ c.key }}" onClick="{{ selectLeague }}" style="font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;padding:7px 14px;border-radius:18px;background:{{ c.bg }};color:{{ c.color }};border:1px solid {{ c.bd }};">{{ c.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:11px;color:#8A8A85;margin-bottom:8px;">Sort by</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;">
+        <sc-for list="{{ sortChips }}" as="c" hint-placeholder-count="3">
+          <button data-sort="{{ c.key }}" onClick="{{ selectSort }}" style="font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;padding:7px 14px;border-radius:18px;background:{{ c.bg }};color:{{ c.color }};border:1px solid {{ c.bd }};">{{ c.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;margin:26px 0 14px;">
+    <div style="font-size:12px;color:#8A8A85;">{{ count }} players</div>
+    <button onClick="{{ reset }}" style="font-family:inherit;font-size:12px;color:#8A8A85;background:none;border:none;cursor:pointer;">Reset filters</button>
+  </div>
+
+  <!-- results -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:14px;">
+    <sc-for list="{{ results }}" as="p" hint-placeholder-count="9">
+      <a href="Player.dc.html" style="display:block;background:#1c1c1c;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px;color:#EFEFE4;" style-hover="border-color:#81ADEC;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:40px;height:40px;border-radius:9px;background:#242424;color:#EFEFE4;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">{{ p.num }}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:15px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ p.name }}</div>
+            <div style="font-size:12px;color:#8A8A85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ p.team }}</div>
+          </div>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#81ADEC;border:1px solid rgba(129,173,236,.35);border-radius:6px;padding:3px 6px;flex-shrink:0;">{{ p.league }}</span>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:12px;">
+          <span style="font-size:11px;color:#B0AD9F;background:#242424;border-radius:6px;padding:4px 9px;">{{ p.pos }}</span>
+          <span style="font-size:11px;color:#8A8A85;background:#242424;border-radius:6px;padding:4px 9px;">{{ p.nat }}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px;border-top:1px solid #262626;padding-top:12px;">
+          <div><div style="font-size:9px;color:#8A8A85;text-transform:uppercase;letter-spacing:.04em;">PTS</div><div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;">{{ p.pts }}</div></div>
+          <div><div style="font-size:9px;color:#8A8A85;text-transform:uppercase;letter-spacing:.04em;">REB</div><div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;">{{ p.reb }}</div></div>
+          <div><div style="font-size:9px;color:#8A8A85;text-transform:uppercase;letter-spacing:.04em;">AST</div><div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;">{{ p.ast }}</div></div>
+          <div><div style="font-size:9px;color:#8A8A85;text-transform:uppercase;letter-spacing:.04em;">EFF</div><div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:#81ADEC;">{{ p.val }}</div></div>
+        </div>
+      </a>
+    </sc-for>
+  </div>
+
+  <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+    <div style="text-align:center;padding:60px 0;color:#8A8A85;">
+      <div style="font-size:16px;color:#EFEFE4;font-weight:600;">No players match your search</div>
+      <div style="font-size:14px;margin-top:6px;">Try a different name, team or clear the filters.</div>
+    </div>
+  </sc-if>
+
+  <div style="display:flex;justify-content:space-between;border-top:1px solid #222;padding-top:18px;margin-top:40px;font-size:12px;color:#8A8A85;">
+    <span>© basket atlas</span><span>Data: NBA.com · Basketball-Reference · 2025-26</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { q: '', pos: 'all', league: 'all', sort: 'val', liveConnected: false, liveStatus: 'idle', liveErr: '', liveKeyInput: '', liveRoster: [], liveUpdated: '' };
+
+  componentDidMount() {
+    if (window.NBAApi && window.NBAApi.hasKey()) { this.setState({ liveConnected: true }); this.loadLive(); }
+  }
+
+  loadLive = async () => {
+    const api = window.NBAApi;
+    if (!api) { this.setState({ liveStatus: 'error', liveErr: 'API client not loaded.' }); return; }
+    this.setState({ liveStatus: 'loading', liveErr: '' });
+    try {
+      const leaders = await api.getLeaders(api.currentSeason());
+      if (!leaders.length) { this.setState({ liveStatus: 'error', liveErr: 'No players matched the live feed.' }); return; }
+      this.setState({ liveStatus: 'live', liveRoster: leaders, liveUpdated: new Date().toLocaleTimeString() });
+    } catch (e) {
+      const msg = e.code === 'AUTH' ? 'That API key was rejected — check it and reconnect.'
+        : e.code === 'RATE' ? 'Rate limit hit — wait a moment and retry.'
+        : e.code === 'NETWORK' ? 'Could not reach the API (network/CORS).'
+        : 'Could not load live data (' + (e.message || 'unknown') + ').';
+      this.setState({ liveStatus: 'error', liveErr: msg });
+    }
+  };
+
+  connectLive = () => {
+    const k = (this.state.liveKeyInput || '').trim();
+    if (!k || !window.NBAApi) return;
+    window.NBAApi.setKey(k);
+    this.setState({ liveConnected: true, liveKeyInput: '' });
+    this.loadLive();
+  };
+
+  disconnectLive = () => {
+    if (window.NBAApi) window.NBAApi.clearKey();
+    this.setState({ liveConnected: false, liveStatus: 'idle', liveRoster: [], liveErr: '' });
+  };
+
+  refreshLive = () => this.loadLive();
+
+  renderVals() {
+    const ACCENT = '#81ADEC', MUTED = '#8A8A85';
+    const f1 = (n) => n.toFixed(1);
+
+    const RAW = [
+      { num: 77, name: 'L. Dončić',        team: 'LA Lakers',     abbr: 'LAL', conf: 'West', pos: 'PG', grp: 'G', nat: 'Slovenia',  pts: 33.5, reb: 8.6,  ast: 8.3,  stl: 1.6, blk: 0.5, tov: 3.6 },
+      { num: 2,  name: 'S. Gilgeous-Alexander', team: 'Oklahoma City', abbr: 'OKC', conf: 'West', pos: 'PG', grp: 'G', nat: 'Canada', pts: 31.1, reb: 4.3, ast: 6.6, stl: 1.7, blk: 1.0, tov: 2.4 },
+      { num: 15, name: 'N. Jokić',         team: 'Denver',        abbr: 'DEN', conf: 'West', pos: 'C',  grp: 'C', nat: 'Serbia',   pts: 28.2, reb: 12.9, ast: 10.7, stl: 1.8, blk: 0.7, tov: 3.4 },
+      { num: 5,  name: 'A. Edwards',       team: 'Minnesota',     abbr: 'MIN', conf: 'West', pos: 'SG', grp: 'G', nat: 'USA',      pts: 28.8, reb: 5.6,  ast: 4.5,  stl: 1.2, blk: 0.6, tov: 3.2 },
+      { num: 7,  name: 'J. Brown',         team: 'Boston',        abbr: 'BOS', conf: 'East', pos: 'SF', grp: 'F', nat: 'USA',      pts: 28.7, reb: 6.0,  ast: 4.3,  stl: 1.2, blk: 0.4, tov: 2.6 },
+      { num: 0,  name: 'T. Maxey',         team: 'Philadelphia',  abbr: 'PHI', conf: 'East', pos: 'PG', grp: 'G', nat: 'USA',      pts: 28.3, reb: 3.5,  ast: 6.5,  stl: 1.9, blk: 0.4, tov: 1.8 },
+      { num: 7,  name: 'K. Durant',        team: 'Houston',       abbr: 'HOU', conf: 'West', pos: 'SF', grp: 'F', nat: 'USA',      pts: 26.0, reb: 6.2,  ast: 4.3,  stl: 0.8, blk: 1.3, tov: 3.0 },
+      { num: 1,  name: 'D. Booker',        team: 'Phoenix',       abbr: 'PHX', conf: 'West', pos: 'SG', grp: 'G', nat: 'USA',      pts: 25.0, reb: 4.0,  ast: 6.5,  stl: 0.9, blk: 0.3, tov: 2.9 },
+      { num: 1,  name: 'L. Ball',          team: 'Charlotte',     abbr: 'CHA', conf: 'East', pos: 'PG', grp: 'G', nat: 'USA',      pts: 25.2, reb: 5.0,  ast: 7.0,  stl: 1.5, blk: 0.3, tov: 3.4 },
+      { num: 11, name: 'J. Brunson',       team: 'New York',      abbr: 'NYK', conf: 'East', pos: 'PG', grp: 'G', nat: 'USA',      pts: 26.0, reb: 3.0,  ast: 7.3,  stl: 0.9, blk: 0.2, tov: 2.4 },
+      { num: 1,  name: 'V. Wembanyama',    team: 'San Antonio',   abbr: 'SAS', conf: 'West', pos: 'C',  grp: 'C', nat: 'France',   pts: 24.8, reb: 11.5, ast: 3.8,  stl: 1.1, blk: 3.1, tov: 3.2 },
+      { num: 32, name: 'K. Towns',         team: 'New York',      abbr: 'NYK', conf: 'East', pos: 'C',  grp: 'C', nat: 'USA',      pts: 24.4, reb: 11.9, ast: 3.1,  stl: 1.0, blk: 0.7, tov: 2.9 },
+      { num: 2,  name: 'C. Cunningham',    team: 'Detroit',       abbr: 'DET', conf: 'East', pos: 'PG', grp: 'G', nat: 'USA',      pts: 24.5, reb: 6.5,  ast: 9.9,  stl: 1.7, blk: 0.6, tov: 3.5 },
+      { num: 3,  name: 'A. Davis',         team: 'Dallas',        abbr: 'DAL', conf: 'West', pos: 'PF', grp: 'F', nat: 'USA',      pts: 24.0, reb: 11.0, ast: 3.0,  stl: 1.2, blk: 2.0, tov: 2.0 },
+      { num: 27, name: 'J. Murray',        team: 'Denver',        abbr: 'DEN', conf: 'West', pos: 'PG', grp: 'G', nat: 'Canada',   pts: 21.0, reb: 4.0,  ast: 7.1,  stl: 1.3, blk: 0.3, tov: 2.2 },
+      { num: 32, name: 'C. Flagg',         team: 'Dallas',        abbr: 'DAL', conf: 'West', pos: 'SF', grp: 'F', nat: 'USA',      pts: 21.0, reb: 6.7,  ast: 4.5,  stl: 1.4, blk: 1.2, tov: 2.4 },
+      { num: 28, name: 'A. Şengün',        team: 'Houston',       abbr: 'HOU', conf: 'West', pos: 'C',  grp: 'C', nat: 'Türkiye',  pts: 19.5, reb: 10.0, ast: 5.5,  stl: 1.2, blk: 0.9, tov: 2.6 },
+      { num: 1,  name: 'J. Johnson',       team: 'Atlanta',       abbr: 'ATL', conf: 'East', pos: 'PF', grp: 'F', nat: 'USA',      pts: 19.5, reb: 9.5,  ast: 7.9,  stl: 1.6, blk: 0.9, tov: 2.8 },
+      { num: 4,  name: 'E. Mobley',        team: 'Cleveland',     abbr: 'CLE', conf: 'East', pos: 'PF', grp: 'F', nat: 'USA',      pts: 18.5, reb: 9.3,  ast: 3.2,  stl: 0.9, blk: 1.7, tov: 1.9 },
+      { num: 7,  name: 'C. Holmgren',      team: 'Oklahoma City', abbr: 'OKC', conf: 'West', pos: 'C',  grp: 'C', nat: 'USA',      pts: 17.5, reb: 8.2,  ast: 2.5,  stl: 0.7, blk: 1.9, tov: 1.8 },
+      { num: 5,  name: 'D. Daniels',       team: 'Atlanta',       abbr: 'ATL', conf: 'East', pos: 'SG', grp: 'G', nat: 'Australia',pts: 14.0, reb: 5.5,  ast: 5.0,  stl: 2.0, blk: 0.7, tov: 1.9 },
+      { num: 7,  name: 'K. Knueppel',      team: 'Charlotte',     abbr: 'CHA', conf: 'East', pos: 'SG', grp: 'G', nat: 'USA',      pts: 14.8, reb: 3.6,  ast: 2.7,  stl: 0.9, blk: 0.2, tov: 1.6 },
+      { num: 13, name: 'D. Clingan',       team: 'Portland',      abbr: 'POR', conf: 'West', pos: 'C',  grp: 'C', nat: 'USA',      pts: 13.0, reb: 11.6, ast: 1.8,  stl: 0.7, blk: 1.7, tov: 1.6 },
+      { num: 9,  name: 'A. Thompson',      team: 'Detroit',       abbr: 'DET', conf: 'East', pos: 'SF', grp: 'F', nat: 'USA',      pts: 12.5, reb: 6.5,  ast: 3.5,  stl: 2.0, blk: 1.1, tov: 1.7 },
+      { num: 27, name: 'R. Gobert',        team: 'Minnesota',     abbr: 'MIN', conf: 'West', pos: 'C',  grp: 'C', nat: 'France',   pts: 12.0, reb: 11.5, ast: 1.5,  stl: 0.7, blk: 2.0, tov: 1.4 },
+    ];
+    const ROSTER = RAW.map((p) => ({ ...p, league: p.abbr, val: p.pts + p.reb + p.ast + p.stl + p.blk - p.tov }));
+
+    const chip = (a) => a ? { bg: ACCENT, color: '#101010', bd: ACCENT } : { bg: 'transparent', color: MUTED, bd: '#333' };
+    const posChips = [ { key: 'all', label: 'All' }, { key: 'G', label: 'Guards' }, { key: 'F', label: 'Forwards' }, { key: 'C', label: 'Centers' } ].map((c) => ({ ...c, ...chip(c.key === this.state.pos) }));
+    const leagueChips = [ { key: 'all', label: 'All' }, { key: 'East', label: 'East' }, { key: 'West', label: 'West' } ].map((c) => ({ ...c, ...chip(c.key === this.state.league) }));
+    const sortChips = [ { key: 'val', label: 'EFF' }, { key: 'pts', label: 'Points' }, { key: 'name', label: 'Name' } ].map((c) => ({ ...c, ...chip(c.key === this.state.sort) }));
+
+    const norm = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const q = norm(this.state.q.trim());
+    const usingLive = this.state.liveRoster && this.state.liveRoster.length > 0;
+    const SRC = (usingLive ? this.state.liveRoster : ROSTER).map((p) => ({ ...p, league: p.league || p.abbr }));
+    // Relevance ranking: exact name > name-prefix > last-name prefix > team/country > loose contains.
+    const scoreOf = (p) => {
+      const name = norm(p.name), team = norm(p.team), nat = norm(p.nat), league = norm(p.league || ''), pos = norm(p.pos);
+      const words = name.split(/[.\s]+/).filter(Boolean);
+      if (name === q) return 100;
+      if (name.startsWith(q)) return 92;
+      if (words.some((w) => w.startsWith(q))) return 84;
+      if (team.startsWith(q) || nat.startsWith(q)) return 60;
+      if (name.includes(q)) return 52;
+      if (team.includes(q)) return 40;
+      if (nat.includes(q)) return 32;
+      if (league.includes(q) || pos.includes(q)) return 18;
+      return 0;
+    };
+    let list = SRC.filter((p) => {
+      if (this.state.pos !== 'all' && p.grp !== this.state.pos) return false;
+      if (this.state.league !== 'all' && p.conf !== this.state.league) return false;
+      if (q && scoreOf(p) === 0) return false;
+      return true;
+    });
+    const secondary = (a, b) => this.state.sort === 'name' ? a.name.localeCompare(b.name) : (b[this.state.sort] - a[this.state.sort]);
+    // With a query, relevance leads and the chosen sort breaks ties; otherwise the chosen sort rules.
+    if (q) list.sort((a, b) => (scoreOf(b) - scoreOf(a)) || secondary(a, b));
+    else list.sort(secondary);
+
+    const results = list.map((p) => ({ ...p, pts: f1(p.pts), reb: f1(p.reb), ast: f1(p.ast), val: f1(p.val) }));
+
+    const S = this.state;
+    const proxyMode = !!(typeof window !== 'undefined' && window.NBA_PROXY_BASE);
+    const DOT = { idle: '#555', loading: '#E6A03C', live: '#3FB950', error: '#E5484D' };
+    const HALO = { idle: 'rgba(85,85,85,.25)', loading: 'rgba(230,160,60,.2)', live: 'rgba(63,185,80,.2)', error: 'rgba(229,72,77,.2)' };
+    const STATUS_TXT = { idle: 'NOT CONNECTED', loading: 'CONNECTING…', live: 'LIVE', error: 'ERROR' };
+
+    return {
+      posChips, leagueChips, sortChips, results,
+      q: this.state.q, count: String(results.length), empty: results.length === 0,
+      liveConnected: S.liveConnected, liveNeedsKey: !S.liveConnected && !proxyMode, showDisconnect: S.liveConnected && !proxyMode,
+      liveOn: usingLive, liveCount: String(this.state.liveRoster.length), liveUpdated: S.liveUpdated,
+      liveDot: DOT[S.liveStatus] || DOT.idle, liveDotHalo: HALO[S.liveStatus] || HALO.idle,
+      liveStatusText: STATUS_TXT[S.liveStatus] || 'NOT CONNECTED',
+      liveError: S.liveStatus === 'error', liveErrorMsg: S.liveErr, liveKeyInput: S.liveKeyInput,
+      onKeyInput: (e) => this.setState({ liveKeyInput: e.currentTarget.value }),
+      connectLive: this.connectLive, disconnectLive: this.disconnectLive, refreshLive: this.refreshLive,
+      onSearch: (e) => this.setState({ q: e.currentTarget.value }),
+      selectPos: (e) => this.setState({ pos: e.currentTarget.dataset.pos }),
+      selectLeague: (e) => this.setState({ league: e.currentTarget.dataset.league }),
+      selectSort: (e) => this.setState({ sort: e.currentTarget.dataset.sort }),
+      reset: () => this.setState({ q: '', pos: 'all', league: 'all', sort: 'val' }),
+    };
+  }
+}
+</script>
+</body>
+</html>

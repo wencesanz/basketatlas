@@ -1,0 +1,10 @@
+<svg viewBox="0 0 660 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Basket Atlas">
+  
+  <g fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round">
+    <circle cx="70" cy="100" r="52"></circle>
+    <path d="M18,100 H122"></path>
+    <path d="M70,48 A26,52 0 0 1 70,152"></path>
+    <path d="M70,48 A26,52 0 0 0 70,152"></path>
+  </g>
+  <text x="158" y="126" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-weight="700" font-size="72" letter-spacing="-1" fill="currentColor">Basket Atlas</text>
+</svg>
