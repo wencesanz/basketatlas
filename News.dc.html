@@ -59,7 +59,10 @@
     <div style="background:#1c1c1c;border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;">
       <sc-for list="{{ liveNews }}" as="n" hint-placeholder-count="5">
         <a href="{{ n.link }}" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 16px;border-bottom:1px solid #222;color:#EFEFE4;" style-hover="background:#242424;">
-          <span style="font-size:14px;font-weight:600;line-height:1.35;">{{ n.title }}</span>
+          <span style="display:flex;align-items:center;gap:10px;min-width:0;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:#81ADEC;border:1px solid rgba(129,173,236,.35);border-radius:5px;padding:3px 7px;white-space:nowrap;flex-shrink:0;">{{ n.source }}</span>
+            <span style="font-size:14px;font-weight:600;line-height:1.35;overflow:hidden;text-overflow:ellipsis;">{{ n.title }}</span>
+          </span>
           <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A8A85;white-space:nowrap;flex-shrink:0;">{{ n.time }}</span>
         </a>
       </sc-for>
@@ -104,14 +107,33 @@ class Component extends DCLogic {
   state = { cat: 'all', liveNews: [], newsStatus: 'idle', newsSource: '', newsUpdated: '' };
 
   componentDidMount() {
-    const feed = (typeof window !== 'undefined' && window.NBA_NEWS_RSS) || '';
-    if (!feed) return;
+    const cfg = (typeof window !== 'undefined' && window) || {};
+    let sources = Array.isArray(cfg.NBA_NEWS_SOURCES) ? cfg.NBA_NEWS_SOURCES.slice() : [];
+    if (!sources.length && cfg.NBA_NEWS_RSS) sources = [{ name: 'RSS', url: cfg.NBA_NEWS_RSS }];
+    if (!sources.length) return;
+
     this.setState({ newsStatus: 'loading' });
-    const url = 'https://api.rss2json.com/v1/api.json?count=10&rss_url=' + encodeURIComponent(feed);
-    fetch(url).then((r) => r.json()).then((d) => {
-      if (!d || d.status !== 'ok' || !Array.isArray(d.items)) throw new Error('feed');
-      const rel = (dstr) => {
-        const t = new Date(dstr).getTime();
+    const conv = (feed) => 'https://api.rss2json.com/v1/api.json?count=10&rss_url=' + encodeURIComponent(feed);
+
+    const jobs = sources.map((s) =>
+      fetch(conv(s.url))
+        .then((r) => r.json())
+        .then((d) => {
+          if (!d || d.status !== 'ok' || !Array.isArray(d.items)) return [];
+          const dec = (str) => {
+            if (!str) return '';
+            const t = document.createElement('textarea');
+            t.innerHTML = str; let o = t.value;   // decode once
+            t.innerHTML = o;                        // again (rss2json double-encodes)
+            return t.value.trim();
+          };
+          return d.items.map((it) => ({ title: dec(it.title), link: it.link, source: s.name, ts: new Date(it.pubDate).getTime() || 0 }));
+        })
+        .catch(() => [])
+    );
+
+    Promise.all(jobs).then((lists) => {
+      const rel = (t) => {
         if (!t) return '';
         const m = Math.floor((Date.now() - t) / 60000);
         if (m < 1) return 'now';
@@ -120,8 +142,18 @@ class Component extends DCLogic {
         if (h < 24) return h + 'h';
         return Math.floor(h / 24) + 'd';
       };
-      const items = d.items.slice(0, 8).map((it) => ({ title: it.title, link: it.link, time: rel(it.pubDate) }));
-      this.setState({ newsStatus: 'live', liveNews: items, newsSource: (d.feed && d.feed.title) || 'RSS', newsUpdated: new Date().toLocaleTimeString() });
+      // Merge, de-dupe by title, sort newest first.
+      const seen = new Set();
+      const merged = [].concat(...lists)
+        .filter((it) => it.title && !seen.has(it.title) && seen.add(it.title))
+        .sort((a, b) => b.ts - a.ts)
+        .slice(0, 12)
+        .map((it) => ({ title: it.title, link: it.link, source: it.source, time: rel(it.ts) }));
+
+      if (!merged.length) { this.setState({ newsStatus: 'error' }); return; }
+      const names = [...new Set(merged.map((m) => m.source))];
+      const label = names.length > 2 ? names.slice(0, 2).join(', ') + ' +' + (names.length - 2) : names.join(', ');
+      this.setState({ newsStatus: 'live', liveNews: merged, newsSource: label, newsUpdated: new Date().toLocaleTimeString() });
     }).catch(() => this.setState({ newsStatus: 'error' }));
   }
 

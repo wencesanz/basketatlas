@@ -26,9 +26,25 @@ window.NBA_PROXY_BASE = "";
 window.HOOPS_PROXY_BASE = "https://basketatlas.vercel.app/api/hoops";
 
 /*
- * NBA_NEWS_RSS — RSS feed for the live News headlines (News page).
- * News is public, so no key: the page fetches it via a CORS-friendly
- * RSS→JSON converter and falls back to curated headlines if it fails.
- * Swap for any NBA feed (NBA.com, Yahoo, team feeds, a Spanish source…).
+ * NBA_NEWS_RSS — legacy single feed (still supported for back-compat).
+ * NBA_NEWS_SOURCES — multiple basketball outlets, merged + sorted by date.
+ *
+ * News is public (no key). The page fetches each feed through a CORS-friendly
+ * RSS→JSON converter, tags every headline with its source, merges them newest
+ * first, and falls back to curated headlines if all feeds fail.
+ *
+ * Each source: { name (shown as a badge), url (a PUBLIC RSS/Atom feed) }.
+ * Add/remove freely. Only feeds that publish a real public RSS work here —
+ * see the note about X and The Athletic in the News page summary.
  */
+window.NBA_NEWS_SOURCES = [
+  { name: "NBA.com",        url: "https://www.nba.com/rss/nba_rss.xml" },
+  { name: "ESPN",           url: "https://www.espn.com/espn/rss/nba/news" },
+  { name: "Yahoo Sports",   url: "https://sports.yahoo.com/nba/rss.xml" },
+  { name: "CBS Sports",     url: "https://www.cbssports.com/rss/headlines/nba/" },
+  { name: "HoopsHype",      url: "https://hoopshype.com/feed/" },
+  { name: "Bleacher Report", url: "https://bleacherreport.com/articles/feed?tag_id=19" }
+];
+
+// Legacy single-feed fallback (used only if NBA_NEWS_SOURCES is empty).
 window.NBA_NEWS_RSS = "https://www.espn.com/espn/rss/nba/news";
