@@ -17,6 +17,7 @@
   a{color:#EFEFE4;text-decoration:none;}
 </style>
 <script src="./nba-config.js"></script>
+<x-import component-from-global-scope="image-slot" from="./image-slot.js" hint-size="0,0"></x-import>
 </helmet>
 
 <div style="max-width:1080px;margin:0 auto;padding:0 24px 40px;">
@@ -36,9 +37,8 @@
   <!-- featured -->
   <a href="#" style="display:block;background:#1c1c1c;border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;margin-top:14px;color:#EFEFE4;">
     <div style="display:flex;flex-wrap:wrap;">
-      <div style="flex:1.1;min-width:260px;background:linear-gradient(135deg,#20202a,#181820);position:relative;min-height:220px;display:flex;align-items:flex-end;padding:24px;">
-        <div style="position:absolute;top:-30px;right:10px;font-size:200px;line-height:1;font-weight:700;color:#81ADEC;opacity:.08;font-family:'JetBrains Mono',monospace;">NY</div>
-        <div style="width:80px;height:104px;border-radius:8px;overflow:hidden;"><svg viewBox="0 0 200 260" width="100%" height="100%"><rect width="200" height="260" fill="#2a2a2a"></rect><circle cx="100" cy="72" r="30" fill="#54544f"></circle><path d="M60 260 L60 190 Q60 140 100 135 Q140 140 140 190 L140 260 Z" fill="#54544f"></path></svg></div>
+      <div style="flex:1.1;min-width:260px;position:relative;min-height:220px;">
+        <image-slot id="news-featured" shape="rect" fit="cover" placeholder="Arrastra la imagen destacada"></image-slot>
       </div>
       <div style="flex:1.4;min-width:280px;padding:30px;">
         <div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#81ADEC;font-weight:600;">Featured · Finals</div>
@@ -84,8 +84,9 @@
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;">
     <sc-for list="{{ articles }}" as="a" hint-placeholder-count="6">
       <a href="#" style="display:flex;flex-direction:column;background:#1c1c1c;border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;color:#EFEFE4;" style-hover="border-color:rgba(255,255,255,.2);">
-        <div style="height:120px;background:{{ a.thumb }};display:flex;align-items:flex-end;padding:14px;">
-          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#EFEFE4;background:rgba(0,0,0,.35);padding:4px 8px;border-radius:6px;">{{ a.league }}</span>
+        <div style="position:relative;height:150px;background:{{ a.thumb }};">
+          <image-slot id="{{ a.slotId }}" shape="rect" fit="cover" placeholder="Imagen"></image-slot>
+          <span style="position:absolute;left:14px;bottom:14px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#EFEFE4;background:rgba(0,0,0,.55);padding:4px 8px;border-radius:6px;pointer-events:none;">{{ a.league }}</span>
         </div>
         <div style="padding:18px;flex:1;display:flex;flex-direction:column;">
           <div style="font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:#81ADEC;font-weight:600;">{{ a.cat }}</div>
@@ -172,7 +173,9 @@ class Component extends DCLogic {
     const CATS = [ { key: 'all', label: 'All' }, { key: 'transfers', label: 'Transfers' }, { key: 'analysis', label: 'Analysis' }, { key: 'awards', label: 'Awards' }, { key: 'rookies', label: 'Rookies' } ];
     const chip = (a) => a ? { bg: ACCENT, color: '#101010', bd: ACCENT } : { bg: 'transparent', color: MUTED, bd: '#333' };
     const cats = CATS.map((c) => ({ ...c, ...chip(c.key === this.state.cat) }));
-    const articles = ARTICLES.filter((a) => this.state.cat === 'all' ? true : a.catKey === this.state.cat);
+    const articles = ARTICLES
+      .map((a, i) => ({ ...a, slotId: 'news-art-' + i }))
+      .filter((a) => this.state.cat === 'all' ? true : a.catKey === this.state.cat);
 
     return {
       cats, articles,
