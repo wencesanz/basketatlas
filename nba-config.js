@@ -43,7 +43,8 @@ window.NBA_NEWS_SOURCES = [
   { name: "Yahoo Sports",   url: "https://sports.yahoo.com/nba/rss.xml" },
   { name: "CBS Sports",     url: "https://www.cbssports.com/rss/headlines/nba/" },
   { name: "HoopsHype",      url: "https://hoopshype.com/feed/" },
-  { name: "Bleacher Report", url: "https://bleacherreport.com/articles/feed?tag_id=19" }
+  { name: "Bleacher Report", url: "https://bleacherreport.com/articles/feed?tag_id=19" },
+  { name: "SLAM",           url: "https://www.slamonline.com/feed/" }
 ];
 
 // Legacy single-feed fallback (used only if NBA_NEWS_SOURCES is empty).
