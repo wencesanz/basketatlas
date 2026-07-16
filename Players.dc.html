@@ -116,7 +116,13 @@
     <sc-for list="{{ results }}" as="p" hint-placeholder-count="9">
       <a href="Player.dc.html" style="display:block;background:#1c1c1c;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px;color:#EFEFE4;" style-hover="border-color:#81ADEC;">
         <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:40px;height:40px;border-radius:9px;background:#242424;color:#EFEFE4;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">{{ p.num }}</div>
+          <div style="position:relative;width:40px;height:40px;border-radius:9px;background:#242424;flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:20px;line-height:1;" aria-hidden="true">🏀</span>
+            <sc-if value="{{ p.hasPhoto }}" hint-placeholder-val="{{ false }}">
+              <img src="{{ p.photo }}" alt="{{ p.name }}" onError="{{ hidePhoto }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+            </sc-if>
+            <span style="position:absolute;right:2px;bottom:1px;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:#EFEFE4;background:rgba(0,0,0,.55);border-radius:4px;padding:0 3px;pointer-events:none;">{{ p.num }}</span>
+          </div>
           <div style="flex:1;min-width:0;">
             <div style="font-size:15px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ p.name }}</div>
             <div style="font-size:12px;color:#8A8A85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ p.team }}</div>
@@ -256,7 +262,13 @@ class Component extends DCLogic {
     if (q) list.sort((a, b) => (scoreOf(b) - scoreOf(a)) || secondary(a, b));
     else list.sort(secondary);
 
-    const results = list.map((p) => ({ ...p, pts: f1(p.pts), reb: f1(p.reb), ast: f1(p.ast), val: f1(p.val) }));
+    const results = list.map((p) => {
+      const photo = p.photo || p.image || '';
+      return { ...p, pts: f1(p.pts), reb: f1(p.reb), ast: f1(p.ast), val: f1(p.val),
+        photo, hasPhoto: !!photo };
+    });
+    // On a broken/missing headshot, hide the img so the 🏀 emoji behind it shows.
+    const hidePhoto = (e) => { e.currentTarget.style.display = 'none'; };
 
     const S = this.state;
     const proxyMode = !!(typeof window !== 'undefined' && window.NBA_PROXY_BASE);
@@ -265,7 +277,7 @@ class Component extends DCLogic {
     const STATUS_TXT = { idle: 'NOT CONNECTED', loading: 'CONNECTING…', live: 'LIVE', error: 'ERROR' };
 
     return {
-      posChips, leagueChips, sortChips, results,
+      posChips, leagueChips, sortChips, results, hidePhoto,
       q: this.state.q, count: String(results.length), empty: results.length === 0,
       liveConnected: S.liveConnected, liveNeedsKey: !S.liveConnected && !proxyMode, showDisconnect: S.liveConnected && !proxyMode,
       liveOn: usingLive, liveCount: String(this.state.liveRoster.length), liveUpdated: S.liveUpdated,

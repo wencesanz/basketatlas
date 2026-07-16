@@ -86,6 +86,7 @@
       pos: p.position || (st.position) || '',
       nat: p.country || p.birth && p.birth.country || '',
       num: p.number || p.jersey || '',
+      photo: p.image || p.photo || '',
       pts: pts, reb: num(st.rebounds && st.rebounds.total), ast: num(st.assists),
       raw: item,
     };
